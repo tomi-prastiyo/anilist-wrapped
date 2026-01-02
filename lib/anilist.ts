@@ -33,42 +33,38 @@ interface AniListEntry {
   };
 }
 
-export async function fetchAniListWrapped(token: string, year: number) {
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
-
-  /* ================= VIEWER ================= */
-
-  const viewerRes = await fetch(ANILIST_API, {
+export async function fetchAniListWrappedByUsername(
+  username: string,
+  year: number
+) {
+  /* ================= USER INFO ================= */
+  const userRes = await fetch(ANILIST_API, {
     method: "POST",
-    headers,
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query: `
-        query {
-          Viewer {
+        query ($name: String) {
+          User(name: $name) {
             name
             avatar { large }
             bannerImage
           }
         }
       `,
+      variables: { name: username },
     }),
   });
 
-  const viewerJson = await viewerRes.json();
-  if (viewerJson.errors) {
-    throw new Error("Failed to fetch AniList viewer");
+  const userJson = await userRes.json();
+  if (userJson.errors || !userJson.data.User) {
+    throw new Error("Failed to fetch AniList user or user not found");
   }
+  const user = userJson.data.User;
 
-  const viewer = viewerJson.data.Viewer;
-
-  /* ================= LIST ================= */
-
+  /* ================= MEDIA LIST ================= */
   const listRes = await fetch(ANILIST_API, {
     method: "POST",
-    headers,
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query: `
         query ($name: String) {
@@ -91,7 +87,7 @@ export async function fetchAniListWrapped(token: string, year: number) {
           }
         }
       `,
-      variables: { name: viewer.name },
+      variables: { name: username },
     }),
   });
 
@@ -105,11 +101,9 @@ export async function fetchAniListWrapped(token: string, year: number) {
     .filter((e: AniListEntry) => e.completedAt?.year === year);
 
   /* ================= STATS ================= */
-
   const monthly = Array(12).fill(0);
   const genreMap: Record<string, number> = {};
   const tagMap: Record<string, number> = {};
-
   let episodes = 0;
   let scoreSum = 0;
   const activeDays = new Set<string>();
@@ -120,7 +114,6 @@ export async function fetchAniListWrapped(token: string, year: number) {
 
     if (e.completedAt?.month) {
       monthly[e.completedAt.month - 1]++;
-
       if (e.completedAt.day) {
         activeDays.add(
           `${e.completedAt.year}-${e.completedAt.month}-${e.completedAt.day}`
@@ -129,7 +122,6 @@ export async function fetchAniListWrapped(token: string, year: number) {
     }
 
     e.media.genres.forEach((g) => (genreMap[g] = (genreMap[g] || 0) + 1));
-
     e.media.tags.forEach((t) => (tagMap[t.name] = (tagMap[t.name] || 0) + 1));
   });
 
@@ -141,8 +133,7 @@ export async function fetchAniListWrapped(token: string, year: number) {
     return am - bm;
   });
 
-  /* ================= SMART PERCENTILE ================= */
-
+  /* ================= PERCENTILE ================= */
   const completed = entries.length;
   const daysActiveCount = activeDays.size || 1;
   const episodesPerDay = episodes / daysActiveCount;
@@ -167,8 +158,7 @@ export async function fetchAniListWrapped(token: string, year: number) {
       ? "Top 50%"
       : "Top 75%";
 
-  /* ================= INSIGHT ================= */
-
+  /* ================= INSIGHTS ================= */
   let watchStyle = "Casual watcher 🌱";
   if (episodesPerDay >= 6) watchStyle = "Certified binge watcher 😈";
   else if (episodesPerDay >= 3) watchStyle = "Binge enjoyer 🍿";
@@ -189,20 +179,17 @@ export async function fetchAniListWrapped(token: string, year: number) {
     : "You enjoy a wide variety of genres 🎨";
 
   /* ================= FINAL RETURN ================= */
-
   return {
     user: {
-      name: viewer.name,
-      avatar: viewer.avatar.large,
-      banner: viewer.bannerImage ?? null,
+      name: user.name,
+      avatar: user.avatar.large,
+      banner: user.bannerImage ?? null,
     },
-
     anime: {
       episodes,
       completed,
       meanScore: Number((scoreSum / Math.max(entries.length, 1)).toFixed(2)),
     },
-
     activity: {
       daysActive: daysActiveCount,
       mostActiveMonth:
@@ -210,27 +197,21 @@ export async function fetchAniListWrapped(token: string, year: number) {
       dailyEpisodes: Number(episodesPerDay.toFixed(2)),
       listActivity: completed,
     },
-
     monthly,
-
     topGenres,
     topTags: Object.entries(tagMap)
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value)
       .slice(0, 10),
-
     topAnime: [...entries]
       .sort((a, b) => (b.score || 0) - (a.score || 0))
       .slice(0, 5),
-
     firstAnime: sortedByDate[0] ?? null,
     lastAnime: sortedByDate[sortedByDate.length - 1] ?? null,
-
     percentile: {
       anime: animePercentile,
       overall: animePercentile,
     },
-
     insight: {
       watchStyle,
       consistency,

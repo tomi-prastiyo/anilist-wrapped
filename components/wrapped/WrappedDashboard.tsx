@@ -11,7 +11,7 @@ import { TopTags } from "./TopTags";
 import { StatRow } from "./StatRow";
 import { BigMetric } from "./BigMetric";
 
-export function WrappedDashboard({ data }: { data: any }) {
+export function WrappedDashboard({ data, year }: { data: any; year: number }) {
   const ref = useRef<HTMLDivElement>(null);
 
   const exportImage = async () => {
@@ -53,7 +53,10 @@ export function WrappedDashboard({ data }: { data: any }) {
   '
       >
         {/* HERO */}
-        <SectionCard title='Your 2025 Anime Wrapped' colSpan='col-span-12'>
+        <SectionCard
+          title={"Your AniList Wrapped " + year}
+          colSpan='col-span-12'
+        >
           <div className='flex justify-between items-center'>
             <div>
               <p className='text-slate-400 text-sm'>AniList Wrapped</p>
