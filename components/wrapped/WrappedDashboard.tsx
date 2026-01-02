@@ -16,11 +16,20 @@ export function WrappedDashboard({ data }: { data: any }) {
 
   const exportImage = async () => {
     if (!ref.current) return;
-    const url = await toPng(ref.current, { pixelRatio: 2 });
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "anilist-wrapped.png";
-    a.click();
+    try {
+      const url = await toPng(ref.current, {
+        pixelRatio: 2,
+        cacheBust: true,
+        backgroundColor: "#0b1220", // agar gradient/tampilan tidak hilang
+      });
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "anilist-wrapped.png";
+      a.click();
+    } catch (err) {
+      console.error("Failed to export image:", err);
+    }
   };
 
   return (
