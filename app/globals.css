@@ -1,26 +1,68 @@
 @import "tailwindcss";
 
+/* ======================
+   THEME TOKENS (TAILWIND v4)
+====================== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #020617; /* slate-950 */
+  --foreground: #e5e7eb; /* slate-200 */
+
+  --card: #121a2a;
+  --card-border: rgba(255, 255, 255, 0.08);
+
+  --accent: #f472b6; /* pink-400 */
 }
 
+/* Expose to Tailwind */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+  --color-accent: var(--accent);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ======================
+   BASE RESET
+====================== */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
+/* Font smoothing */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent horizontal scroll (export-safe) */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ======================
+   IMAGE & MEDIA
+====================== */
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ======================
+   SCROLLBAR (OPTIONAL, SAFE)
+====================== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
 }

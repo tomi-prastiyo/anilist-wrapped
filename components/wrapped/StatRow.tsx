@@ -1,19 +1,31 @@
-export function StatRow({
-  label,
-  value,
-  highlight,
-}: {
+interface StatRowProps {
   label: string;
   value: string | number;
   highlight?: boolean;
-}) {
+  divider?: boolean;
+}
+
+export function StatRow({
+  label,
+  value,
+  highlight = false,
+  divider = false,
+}: StatRowProps) {
   return (
-    <div className='flex justify-between items-center py-2'>
-      <span className='text-slate-400 text-sm'>{label}</span>
+    <div
+      className={`
+        flex items-center justify-between
+        py-2.5
+        ${divider ? "border-b border-white/5" : ""}
+      `}
+    >
+      <span className='text-sm text-slate-400'>{label}</span>
+
       <span
-        className={`font-semibold ${
-          highlight ? "text-pink-400" : "text-white"
-        }`}
+        className={`
+          text-sm font-semibold
+          ${highlight ? "text-pink-400" : "text-slate-100"}
+        `}
       >
         {value}
       </span>

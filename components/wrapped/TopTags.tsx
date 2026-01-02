@@ -1,12 +1,31 @@
-export function TopTags({ tags }: { tags: any[] }) {
+interface TopTag {
+  name: string;
+}
+
+interface TopTagsProps {
+  tags: TopTag[];
+}
+
+export function TopTags({ tags }: TopTagsProps) {
+  if (!tags || tags.length === 0) {
+    return <div className='text-xs text-slate-500'>No tags available</div>;
+  }
+
   return (
     <div className='flex flex-wrap gap-2'>
-      {tags.map((t) => (
+      {tags.map((tag) => (
         <span
-          key={t.name}
-          className='text-xs px-2 py-1 rounded-full bg-pink-500/10 text-pink-400'
+          key={tag.name}
+          className='
+            px-2.5 py-1
+            text-xs font-medium
+            rounded-full
+            bg-pink-500/10
+            text-pink-400
+            border border-pink-400/20
+          '
         >
-          {t.name}
+          {tag.name}
         </span>
       ))}
     </div>
