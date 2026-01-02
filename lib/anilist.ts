@@ -4,18 +4,16 @@ export async function fetchAniListWrapped(token: string, year: number) {
     Authorization: `Bearer ${token}`,
   };
 
+  // Viewer
   const viewerRes = await fetch("https://graphql.anilist.co", {
     method: "POST",
     headers,
     body: JSON.stringify({
-      query: `query {
+      query: `
+      query {
         Viewer {
           name
           avatar { large }
-          statistics {
-            anime { count meanScore }
-            manga { count meanScore }
-          }
         }
       }`,
     }),
@@ -23,6 +21,7 @@ export async function fetchAniListWrapped(token: string, year: number) {
 
   const viewer = (await viewerRes.json()).data.Viewer;
 
+  // List
   const listRes = await fetch("https://graphql.anilist.co", {
     method: "POST",
     headers,
@@ -32,16 +31,13 @@ export async function fetchAniListWrapped(token: string, year: number) {
         MediaListCollection(userName: $name, type: ANIME) {
           lists {
             entries {
-              status
               progress
-              score(format: POINT_10)
+              score
               completedAt { year month }
-              startedAt { year month }
               media {
                 title { romaji }
                 coverImage { large }
                 genres
-                tags { name }
               }
             }
           }
@@ -55,72 +51,48 @@ export async function fetchAniListWrapped(token: string, year: number) {
     .flatMap((l: any) => l.entries)
     .filter((e: any) => e.completedAt?.year === year);
 
-  /* ================= STATS ================= */
-
   const monthly = Array(12).fill(0);
   const genreMap: Record<string, number> = {};
-  const tagMap: Record<string, number> = {};
   let episodes = 0;
 
   entries.forEach((e: any) => {
     episodes += e.progress || 0;
-    if (e.completedAt?.month) monthly[e.completedAt.month - 1]++;
-
-    e.media.genres.forEach(
-      (g: string) => (genreMap[g] = (genreMap[g] || 0) + 1)
-    );
-    e.media.tags.forEach(
-      (t: any) => (tagMap[t.name] = (tagMap[t.name] || 0) + 1)
-    );
+    if (e.completedAt?.month) {
+      monthly[e.completedAt.month - 1]++;
+    }
+    e.media.genres.forEach((g: string) => {
+      genreMap[g] = (genreMap[g] || 0) + 1;
+    });
   });
 
-  const sortedByDate = [...entries].sort(
-    (a, b) => (a.completedAt?.month || 0) - (b.completedAt?.month || 0)
-  );
+  const avgAnimePerMonth = entries.length / 12;
+  const avgEpisodePerAnime = episodes / Math.max(entries.length, 1);
 
-  /* ================= PERCENTILE (ESTIMATE) ================= */
-  const animePercentile =
-    entries.length > 300
-      ? "Top 1%"
-      : entries.length > 150
-      ? "Top 10%"
-      : entries.length > 50
-      ? "Top 25%"
-      : "Top 50%";
+  const bingeScore =
+    avgEpisodePerAnime > 18
+      ? "Binge Watcher"
+      : avgEpisodePerAnime > 10
+      ? "Regular Watcher"
+      : "Casual Watcher";
 
   return {
-    user: {
-      name: viewer.name,
-      avatar: viewer.avatar.large,
-    },
-    anime: {
+    user: viewer,
+    stats: {
       episodes,
       completed: entries.length,
       meanScore:
         entries.reduce((a: number, b: any) => a + (b.score || 0), 0) /
         Math.max(entries.length, 1),
-    },
-    activity: {
-      daysActive:
-        new Set(entries.map((e: any) => `${e.completedAt?.month}`)).size * 5, // estimation
-      mostActiveMonth: monthly.indexOf(Math.max(...monthly)) + 1,
-      dailyEpisodes: (episodes / 365).toFixed(2),
+      avgAnimePerMonth: Number(avgAnimePerMonth.toFixed(1)),
+      avgEpisodePerAnime: Number(avgEpisodePerAnime.toFixed(1)),
+      bingeScore,
     },
     monthly,
-    topGenres: Object.entries(genreMap)
-      .map(([name, value]) => ({ name, value }))
-      .slice(0, 8),
-    topTags: Object.entries(tagMap)
-      .map(([name, value]) => ({ name, value }))
-      .slice(0, 10),
     topAnime: entries
       .sort((a: any, b: any) => (b.score || 0) - (a.score || 0))
-      .slice(0, 5),
-    firstAnime: sortedByDate[0],
-    lastAnime: sortedByDate[sortedByDate.length - 1],
-    percentile: {
-      anime: animePercentile,
-      overall: animePercentile,
-    },
+      .slice(0, 3),
+    genres: Object.entries(genreMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6),
   };
 }
