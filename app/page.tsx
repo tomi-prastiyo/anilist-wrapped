@@ -5,7 +5,7 @@ import { fetchAniListWrappedByUsername } from "@/lib/anilist";
 import { WrappedDashboard } from "@/components/wrapped/WrappedDashboard";
 
 export default function Home() {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("PdBear");
   const [year, setYear] = useState(2024);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
