@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { fetchAniListWrappedByUsername } from "@/lib/anilist";
-import { WrappedDashboard } from "@/components/wrapped/WrappedDashboard";
+import { WrappedDashboard } from "@/components/WrappedDashboard/WrappedDashboard";
 
 export default function Home() {
   const [username, setUsername] = useState("PdBear");
-  const [year, setYear] = useState(2024);
+  const [year, setYear] = useState(2025);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 

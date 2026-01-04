@@ -11,6 +11,7 @@ import {
 
 interface MonthlyChartProps {
   data: number[];
+  color?: string;
 }
 
 const MONTHS = [
@@ -28,10 +29,10 @@ const MONTHS = [
   "Dec",
 ];
 
-export function MonthlyChart({ data }: MonthlyChartProps) {
+export function MonthlyChart({ data, color = "#ec4899" }: MonthlyChartProps) {
   if (!data || data.length === 0) {
     return (
-      <div className='h-[180px] flex items-center justify-center text-xs text-slate-500'>
+      <div className='h-full flex items-center justify-center text-xs text-slate-500'>
         No activity data
       </div>
     );
@@ -43,7 +44,7 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
   }));
 
   return (
-    <div className='w-full h-[180px]'>
+    <div className='w-full h-full'>
       <ResponsiveContainer width='100%' height='100%'>
         <LineChart data={chartData}>
           <CartesianGrid stroke='rgba(255,255,255,0.08)' vertical={false} />
@@ -69,10 +70,9 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
           <Line
             type='monotone'
             dataKey='value'
-            stroke='#ec4899'
+            stroke={color}
             strokeWidth={3}
             dot={false}
-            filter='drop-shadow(0 0 6px rgba(236,72,153,0.6))'
           />
         </LineChart>
       </ResponsiveContainer>
