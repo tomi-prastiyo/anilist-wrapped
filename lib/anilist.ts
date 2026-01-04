@@ -48,6 +48,7 @@ export async function fetchAniListWrappedByUsername(
             name
             avatar { large }
             bannerImage
+            createdAt
           }
         }
       `,
@@ -184,6 +185,7 @@ export async function fetchAniListWrappedByUsername(
       name: user.name,
       avatar: user.avatar.large,
       banner: user.bannerImage ?? null,
+      memberSince: new Date(user.createdAt * 1000).getFullYear(),
     },
     anime: {
       episodes,
