@@ -34,7 +34,7 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
 
   return (
     <div className='space-y-4'>
-      {/* EXPORT */}
+      {/* EXPORT BUTTON */}
       <div className='flex justify-end'>
         <button
           onClick={exportImage}
@@ -44,11 +44,11 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
         </button>
       </div>
 
-      {/* WRAPPED DASHBOARD */}
+      {/* DASHBOARD WRAPPER */}
       <div
         ref={ref}
         className='w-full max-w-[1200px] mx-auto rounded-3xl p-6 grid grid-cols-12 gap-4
-    bg-gradient-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
+        bg-gradient-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
       >
         {/* HEADER */}
         <div className='relative col-span-12'>
@@ -59,12 +59,11 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
             }}
           >
             <div className='relative z-10 flex justify-between items-end w-full max-w-7xl mx-auto p-6 md:p-10'>
-              {/* Teks AniList Wrapped */}
               <div>
                 <h1 className='text-5xl md:text-7xl font-extrabold tracking-tight text-white drop-shadow-lg leading-tight'>
                   YOUR <br />
                   <span className='bg-gradient-to-r from-[#3db4f2] to-[#c063ff] bg-clip-text text-transparent'>
-                    2024
+                    {year}
                   </span>
                 </h1>
                 <p className='text-gray-300 text-lg mt-2 font-medium'>
@@ -91,15 +90,14 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
               </div>
             </div>
           </header>
-
           <div className='h-12 md:h-16'></div>
         </div>
 
-        {/* ANIME AND MANGA STATS */}
+        {/* ANIME & MANGA TOTALS */}
         <div className='col-span-12'>
           <div className='max-w-6xl mx-auto w-full'>
             <div className='grid grid-cols-1 lg:grid-cols-12 gap-5'>
-              {/* LEFT - Total Anime / Manga */}
+              {/* LEFT: Total Anime / Manga */}
               <div className='lg:col-span-5'>
                 <div className='grid grid-cols-2 gap-4 h-full'>
                   {/* Total Anime Watched */}
@@ -114,7 +112,7 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                       Total Anime Watched
                     </p>
                     <h3 className='text-5xl font-extrabold text-white leading-none text-left'>
-                      150
+                      {data.anime.completed.toLocaleString()}
                     </h3>
                     <p className='text-white/90 font-semibold text-sm mt-1 text-left'>
                       titles
@@ -133,7 +131,7 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                       Total Manga Read
                     </p>
                     <h3 className='text-5xl font-extrabold text-white leading-none text-left'>
-                      17
+                      {data.manga.completed.toLocaleString()}
                     </h3>
                     <p className='text-white/90 font-semibold text-sm mt-1 text-left'>
                       titles
@@ -142,7 +140,7 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                 </div>
               </div>
 
-              {/* RIGHT - Anime Stats / Manga Stats */}
+              {/* RIGHT: Anime & Manga Stats */}
               <div className='lg:col-span-7 flex flex-col justify-between h-full space-y-5'>
                 {/* Anime Stats */}
                 <div className='space-y-2'>
@@ -154,11 +152,20 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                   </div>
                   <div className='grid grid-cols-5 gap-3'>
                     {[
-                      { label: "Episodes", value: "1,808" },
-                      { label: "Completed", value: "120" },
-                      { label: "Paused", value: "0" },
-                      { label: "Drop", value: "0" },
-                      { label: "Mean Score", value: "89.0" },
+                      {
+                        label: "Episodes",
+                        value: data.anime.episodes.toLocaleString(),
+                      },
+                      {
+                        label: "Completed",
+                        value: data.anime.completed.toLocaleString(),
+                      },
+                      {
+                        label: "Mean Score",
+                        value: data.anime.meanScore.toFixed(1),
+                      },
+                      { label: "Paused", value: data.anime.paused },
+                      { label: "Drop", value: data.anime.dropped },
                     ].map((stat, i) => (
                       <div
                         key={i}
@@ -189,11 +196,20 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                   </div>
                   <div className='grid grid-cols-5 gap-3'>
                     {[
-                      { label: "Chapters", value: "1,808" },
-                      { label: "Completed", value: "120" },
-                      { label: "Paused", value: "0" },
-                      { label: "Drop", value: "0" },
-                      { label: "Mean Score", value: "89.0" },
+                      {
+                        label: "Chapters",
+                        value: data.manga.episodes.toLocaleString(),
+                      },
+                      {
+                        label: "Completed",
+                        value: data.manga.completed.toLocaleString(),
+                      },
+                      {
+                        label: "Mean Score",
+                        value: data.manga.meanScore.toFixed(1),
+                      },
+                      { label: "Paused", value: data.manga.paused },
+                      { label: "Drop", value: data.manga.dropped },
                     ].map((stat, i) => (
                       <div
                         key={i}
@@ -217,69 +233,6 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
             </div>
           </div>
         </div>
-      </div>
-      <div
-        className='
-    w-[1200px] rounded-3xl p-6 grid grid-cols-12 gap-4
-    bg-gradient-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]
-  '
-      >
-        {/* STATS ROW */}
-        <SectionCard title='Activity' colSpan='col-span-4'>
-          <StatRow
-            label='Days Active'
-            value={`${data.activity.daysActive} days`}
-            highlight
-          />
-
-          <StatRow
-            label='Most Active Month'
-            value={data.activity.mostActiveMonth}
-          />
-          <StatRow
-            label='Daily Episodes'
-            value={`${data.activity.dailyEpisodes} eps/day`}
-          />
-        </SectionCard>
-
-        <SectionCard title='Percentile' colSpan='col-span-4'>
-          <StatRow label='Anime' value={data.percentile.anime} highlight />
-          <StatRow label='Overall' value={data.percentile.overall} />
-        </SectionCard>
-
-        <SectionCard title='Anime Stats' colSpan='col-span-4'>
-          <div className='grid grid-cols-2 gap-4'>
-            <BigMetric label='Episodes' value={data.anime.episodes} />
-            <BigMetric label='Completed' value={data.anime.completed} />
-            <BigMetric
-              label='Mean Score'
-              value={data.anime.meanScore.toFixed(1)}
-            />
-          </div>
-        </SectionCard>
-
-        {/* MONTHLY */}
-        <SectionCard title='Monthly Activity' colSpan='col-span-12'>
-          <MonthlyChart data={data.monthly} />
-        </SectionCard>
-
-        {/* TOPS */}
-        <SectionCard title='Top Anime' colSpan='col-span-8'>
-          <TopGrid items={data.topAnime} />
-        </SectionCard>
-
-        <SectionCard title='Top Genres' colSpan='col-span-4'>
-          <GenreRadar data={data.topGenres} />
-        </SectionCard>
-
-        {/* EXTRAS */}
-        <SectionCard title='Top Tags' colSpan='col-span-4'>
-          <TopTags tags={data.topTags} />
-        </SectionCard>
-
-        <SectionCard title='First & Last Anime' colSpan='col-span-8'>
-          <TopGrid items={[data.firstAnime, data.lastAnime]} />
-        </SectionCard>
       </div>
     </div>
   );
