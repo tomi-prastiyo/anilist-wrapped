@@ -1,0 +1,81 @@
+"use client";
+
+import {
+  LineChart,
+  Line,
+  XAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
+
+interface MonthlyChartProps {
+  data: number[];
+  color?: string;
+}
+
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+export function MonthlyChart({ data, color = "#ec4899" }: MonthlyChartProps) {
+  if (!data || data.length === 0) {
+    return (
+      <div className='h-full flex items-center justify-center text-xs text-slate-500'>
+        No activity data
+      </div>
+    );
+  }
+
+  const chartData = data.map((value, i) => ({
+    month: MONTHS[i],
+    value,
+  }));
+
+  return (
+    <div className='w-full h-full'>
+      <ResponsiveContainer width='100%' height='100%'>
+        <LineChart data={chartData}>
+          <CartesianGrid stroke='rgba(255,255,255,0.08)' vertical={false} />
+
+          <XAxis
+            dataKey='month'
+            tick={{ fill: "#94a3b8", fontSize: 10 }}
+            axisLine={false}
+            tickLine={false}
+          />
+
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#020617",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: 8,
+              fontSize: 12,
+            }}
+            labelStyle={{ color: "#e5e7eb" }}
+            cursor={{ stroke: "rgba(255,255,255,0.1)" }}
+          />
+
+          <Line
+            type='monotone'
+            dataKey='value'
+            stroke={color}
+            strokeWidth={3}
+            dot={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
