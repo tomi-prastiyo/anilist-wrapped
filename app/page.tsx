@@ -1,6 +1,7 @@
-import Image from "next/image";
-import Page from "./wrapped/page";
+"use client";
 
-export default function Home() {
+import Page from "@/wrapped/page";
+
+export default function HomePage() {
   return <Page />;
 }
