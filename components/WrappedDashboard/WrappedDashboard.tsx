@@ -9,7 +9,7 @@ import { SmallStatCard } from "./SmallStatCard";
 import { TopList } from "./TopList";
 import { MonthlyChart } from "./MonthlyChart";
 import { TopTagsAndGenres } from "./TopTagsAndGenres";
-import { DailyActivityCard, DailyActivityChart } from "./DailyActivityCard";
+import { DailyActivityCard } from "./DailyActivityCard";
 import { ActivityStats } from "./ActivityStatCard";
 
 export function WrappedDashboard({ data, year }: { data: any; year: number }) {
