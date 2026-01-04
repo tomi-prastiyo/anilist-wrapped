@@ -53,7 +53,7 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
         {/* HEADER */}
         <div className='relative col-span-12'>
           <header
-            className='w-full h-96 relative bg-cover bg-center flex items-end rounded-2xl'
+            className='w-full h-96 relative bg-cover bg-center flex items-end rounded-t-2xl'
             style={{
               backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 60%, #0b1622 100%), url(${data.user.banner})`,
             }}
@@ -95,17 +95,127 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
           <div className='h-12 md:h-16'></div>
         </div>
 
-        {/* Contoh SectionCard / konten di bawah hero */}
+        {/* ANIME AND MANGA STATS */}
         <div className='col-span-12'>
-          <SectionCard
-            title={`Your AniList Wrapped ${new Date().getFullYear()}`}
-            colSpan='col-span-12'
-          >
-            {/* Konten bisa ditempatkan di sini */}
-            <p className='text-gray-300'>
-              This is where your AniList summary goes.
-            </p>
-          </SectionCard>
+          <div className='max-w-6xl mx-auto w-full'>
+            <div className='grid grid-cols-1 lg:grid-cols-12 gap-5'>
+              {/* LEFT - Total Anime / Manga */}
+              <div className='lg:col-span-5'>
+                <div className='grid grid-cols-2 gap-4 h-full'>
+                  {/* Total Anime Watched */}
+                  <div
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #9810FA 0%, #E60076 100%)",
+                    }}
+                    className='rounded-2xl p-6 shadow-xl transform transition hover:scale-105 flex flex-col justify-center items-start h-full'
+                  >
+                    <p className='text-[11px] font-bold tracking-widest text-white/80 uppercase mb-2 text-left'>
+                      Total Anime Watched
+                    </p>
+                    <h3 className='text-5xl font-extrabold text-white leading-none text-left'>
+                      150
+                    </h3>
+                    <p className='text-white/90 font-semibold text-sm mt-1 text-left'>
+                      titles
+                    </p>
+                  </div>
+
+                  {/* Total Manga Read */}
+                  <div
+                    style={{
+                      background:
+                        "linear-gradient(313.56deg, #F54900 2.08%, #D08700 97.82%)",
+                    }}
+                    className='rounded-2xl p-6 shadow-xl transform transition hover:scale-105 flex flex-col justify-center items-start h-full'
+                  >
+                    <p className='text-[11px] font-bold tracking-widest text-white/80 uppercase mb-2 text-left'>
+                      Total Manga Read
+                    </p>
+                    <h3 className='text-5xl font-extrabold text-white leading-none text-left'>
+                      17
+                    </h3>
+                    <p className='text-white/90 font-semibold text-sm mt-1 text-left'>
+                      titles
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* RIGHT - Anime Stats / Manga Stats */}
+              <div className='lg:col-span-7 flex flex-col justify-between h-full space-y-5'>
+                {/* Anime Stats */}
+                <div className='space-y-2'>
+                  <div className='flex items-center gap-2 pl-1'>
+                    <div className='w-1 h-4 bg-purple-500 rounded-full'></div>
+                    <h4 className='text-[10px] font-bold tracking-widest text-gray-400 uppercase'>
+                      Anime Stats
+                    </h4>
+                  </div>
+                  <div className='grid grid-cols-5 gap-3'>
+                    {[
+                      { label: "Episodes", value: "1,808" },
+                      { label: "Completed", value: "120" },
+                      { label: "Paused", value: "0" },
+                      { label: "Drop", value: "0" },
+                      { label: "Mean Score", value: "89.0" },
+                    ].map((stat, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          background: "#271932",
+                          borderColor: "#40225C",
+                        }}
+                        className='border rounded-2xl p-3 shadow-lg hover:scale-105 transition text-center'
+                      >
+                        <div className='text-xl font-bold text-white mb-1'>
+                          {stat.value}
+                        </div>
+                        <div className='text-[8px] text-gray-400 uppercase tracking-wide font-semibold'>
+                          {stat.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Manga Stats */}
+                <div className='space-y-2'>
+                  <div className='flex items-center gap-2 pl-1'>
+                    <div className='w-1 h-4 bg-orange-500 rounded-full'></div>
+                    <h4 className='text-[10px] font-bold tracking-widest text-gray-400 uppercase'>
+                      Manga Stats
+                    </h4>
+                  </div>
+                  <div className='grid grid-cols-5 gap-3'>
+                    {[
+                      { label: "Chapters", value: "1,808" },
+                      { label: "Completed", value: "120" },
+                      { label: "Paused", value: "0" },
+                      { label: "Drop", value: "0" },
+                      { label: "Mean Score", value: "89.0" },
+                    ].map((stat, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          background: "#2B231D",
+                          borderColor: "#562C17",
+                        }}
+                        className='border rounded-2xl p-3 shadow-lg hover:scale-105 transition text-center'
+                      >
+                        <div className='text-xl font-bold text-white mb-1'>
+                          {stat.value}
+                        </div>
+                        <div className='text-[8px] text-gray-400 uppercase tracking-wide font-semibold'>
+                          {stat.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div
