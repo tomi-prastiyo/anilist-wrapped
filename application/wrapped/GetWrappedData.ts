@@ -28,9 +28,20 @@ export async function getWrappedData(
 
   const mostActiveMonth = getMostActiveMonth(animeStats.monthly);
 
-  // ================= TOP ANIME =================
+  // ================= TOP ANIME & MANGA =================
   const topAnime = [...animeEntries]
-    .filter((e) => e.status === "COMPLETED")
+    .filter(
+      (e) =>
+        e.status === "COMPLETED" && e.completedAt?.year === year && e.score > 0
+    )
+    .sort((a, b) => (b.score || 0) - (a.score || 0))
+    .slice(0, 5);
+
+  const topManga = [...mangaEntries]
+    .filter(
+      (e) =>
+        e.status === "COMPLETED" && e.completedAt?.year === year && e.score > 0
+    )
     .sort((a, b) => (b.score || 0) - (a.score || 0))
     .slice(0, 5);
 
@@ -49,7 +60,7 @@ export async function getWrappedData(
     manga: mangaStats,
 
     activity: {
-      daysActive: animeStats.daysActive,
+      daysActive: animeStats.daysActive + "/365",
       mostActiveMonth,
       dailyEpisodes: animeStats.episodesPerDay,
       listActivity: animeStats.completed,
@@ -60,6 +71,7 @@ export async function getWrappedData(
     topTags: animeStats.topTags,
 
     topAnime,
+    topManga,
     firstAnime: animeStats.firstEntry,
     lastAnime: animeStats.lastEntry,
 

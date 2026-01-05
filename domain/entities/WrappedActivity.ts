@@ -1,5 +1,5 @@
 export interface WrappedActivity {
-  daysActive: number;
+  daysActive: string;
   mostActiveMonth: string;
   dailyEpisodes: number;
   listActivity: number;

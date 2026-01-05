@@ -26,6 +26,7 @@ export interface WrappedResult {
   }[];
 
   topAnime: AniListEntry[];
+  topManga: AniListEntry[];
 
   firstAnime: AniListEntry | null;
   lastAnime: AniListEntry | null;

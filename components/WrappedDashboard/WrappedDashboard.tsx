@@ -116,15 +116,15 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                     {[
                       {
                         label: "Episodes",
-                        value: data.anime.episodes.toLocaleString(),
+                        value: data.anime.episodes,
                       },
                       {
                         label: "Completed",
-                        value: data.anime.completed.toLocaleString(),
+                        value: data.anime.completed,
                       },
                       {
                         label: "Mean Score",
-                        value: data.anime.meanScore.toFixed(1),
+                        value: data.anime.meanScore,
                       },
                       { label: "Paused", value: data.anime.paused },
                       { label: "Drop", value: data.anime.dropped },
@@ -150,15 +150,15 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                     {[
                       {
                         label: "Chapters",
-                        value: data.manga.episodes.toLocaleString(),
+                        value: data.manga.episodes,
                       },
                       {
                         label: "Completed",
-                        value: data.manga.completed.toLocaleString(),
+                        value: data.manga.completed,
                       },
                       {
                         label: "Mean Score",
-                        value: data.manga.meanScore.toFixed(1),
+                        value: data.manga.meanScore,
                       },
                       { label: "Paused", value: data.manga.paused },
                       { label: "Drop", value: data.manga.dropped },
@@ -187,7 +187,7 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                   stats={[
                     {
                       label: "Days Active",
-                      value: `${data.activity.daysActive}/366`,
+                      value: data.activity.daysActive,
                     },
                     {
                       label: "Most Active Day",
@@ -224,14 +224,8 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
 
             <div className='lg:col-span-7 space-y-6'>
               <div className='space-y-4'>
-                <TopList
-                  title='Top Anime'
-                  items={data.anime.entries.slice(0, 5)}
-                />
-                <TopList
-                  title='Top Manga'
-                  items={data.manga.entries.slice(0, 5)}
-                />
+                <TopList title='Top Anime' items={data.topAnime} />
+                <TopList title='Top Manga' items={data.topManga} />
               </div>
             </div>
           </div>
