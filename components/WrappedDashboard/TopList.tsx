@@ -1,16 +1,19 @@
-import { AniListEntry } from "@/domain/entities/AniListEntry";
+"use client";
+
+import { AniListItem } from "@/presentation/models/AniListItem";
 import { Crown } from "lucide-react";
+import Image from "next/image";
 
 interface TopListProps {
   title: string;
-  items: AniListEntry[];
+  items: AniListItem[];
 }
 
 export function TopList({ title, items }: TopListProps) {
-  if (!items || items.length === 0)
+  if (items.length === 0)
     return <div className='text-xs text-slate-500'>No data available</div>;
 
-  const topItems = items.slice(0, 5); // ambil 5 teratas
+  const [first, ...rest] = items;
 
   return (
     <div className='card-bg rounded-2xl p-6'>
@@ -23,28 +26,29 @@ export function TopList({ title, items }: TopListProps) {
 
       <div className='flex flex-col md:flex-row gap-6'>
         {/* Big poster */}
-        {topItems[0] && (
-          <div className='w-full md:w-1/3 flex-shrink-0'>
-            <div className='relative aspect-[2/3] rounded-xl overflow-hidden shadow-lg group'>
+        {first && (
+          <div className='w-full md:w-1/3 shrink-0'>
+            <div className='relative aspect-2/3 rounded-xl overflow-hidden shadow-lg group'>
               <div className='absolute top-2 left-2 bg-yellow-400 text-black font-bold w-8 h-8 flex items-center justify-center rounded-lg shadow-md z-10'>
                 1
               </div>
-              <img
-                src={topItems[0].media.coverImage.large}
-                alt={topItems[0].media.title.romaji}
+              <Image
+                src={first.media.coverImage.large}
+                alt={first.media.title.romaji}
+                fill
                 className='w-full h-full object-cover transition duration-300 group-hover:scale-110'
               />
-              <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent'></div>
+              <div className='absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent'></div>
             </div>
           </div>
         )}
 
         {/* Small posters */}
         <div className='flex-1 flex flex-col justify-between'>
-          {topItems[0] && (
+          {first && (
             <div className='mb-6'>
               <h3 className='text-2xl font-bold text-white mb-1'>
-                {topItems[0].media.title.romaji}
+                {first.media.title.romaji}
               </h3>
               <span className='px-2 py-1 bg-gray-700 rounded text-xs text-gray-300'>
                 {title}
@@ -53,17 +57,18 @@ export function TopList({ title, items }: TopListProps) {
           )}
 
           <div className='grid grid-cols-4 gap-3'>
-            {topItems.slice(1).map((entry, idx) => (
+            {rest.map((item, idx) => (
               <div
-                key={entry.media.id ?? idx}
-                className='relative aspect-[2/3] rounded-lg overflow-hidden shadow-md group cursor-pointer'
+                key={item.media.id ?? idx}
+                className='relative aspect-2/3 rounded-lg overflow-hidden shadow-md group cursor-pointer'
               >
                 <div className='absolute top-1 left-1 bg-white text-black font-bold text-xs w-5 h-5 flex items-center justify-center rounded shadow z-10'>
                   {idx + 2}
                 </div>
-                <img
-                  src={entry.media.coverImage.large}
-                  alt={entry.media.title.romaji}
+                <Image
+                  src={item.media.coverImage.large}
+                  alt={item.media.title.romaji}
+                  fill
                   className='w-full h-full object-cover transition duration-300 group-hover:scale-110'
                 />
               </div>
