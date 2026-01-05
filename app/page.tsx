@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { fetchAniListWrappedByUsername } from "@/lib/anilist";
 import { WrappedDashboard } from "@/components/WrappedDashboard/WrappedDashboard";
+import { AniListRepositoryImpl } from "@/infrastructure/anilist/AniListRepositoryImpl";
+import { getWrappedData } from "@/application/wrapped/GetWrappedData";
 
 export default function Home() {
   const [username, setUsername] = useState("PdBear");
@@ -14,7 +15,8 @@ export default function Home() {
     if (!username) return alert("Please enter the AniList username");
     setLoading(true);
     try {
-      const d = await fetchAniListWrappedByUsername(username, year);
+      const repo = new AniListRepositoryImpl();
+      const d = await getWrappedData(repo, username, year);
       setData(d);
     } catch (err: any) {
       console.error(err);
