@@ -1,7 +1,7 @@
-import { AniListWrapped } from "../../lib/anilist";
+import { WrappedResult } from "@/domain/entities/WrappedResult";
 
 interface DailyActivityCardProps {
-  data: AniListWrapped;
+  data: WrappedResult;
 }
 
 export function DailyActivityCard({ data }: DailyActivityCardProps) {

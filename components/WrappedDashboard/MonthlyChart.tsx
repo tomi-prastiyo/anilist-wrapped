@@ -1,5 +1,6 @@
 "use client";
 
+import { MONTHS } from "@/shared/constants/months";
 import {
   LineChart,
   Line,
@@ -13,21 +14,6 @@ interface MonthlyChartProps {
   data: number[];
   color?: string;
 }
-
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
 
 export function MonthlyChart({ data, color = "#ec4899" }: MonthlyChartProps) {
   if (!data || data.length === 0) {

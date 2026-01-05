@@ -1,5 +1,5 @@
+import { AniListEntry } from "@/domain/entities/AniListEntry";
 import { Crown } from "lucide-react";
-import { AniListEntry } from "../../lib/anilist";
 
 interface TopListProps {
   title: string;
