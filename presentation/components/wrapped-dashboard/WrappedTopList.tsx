@@ -2,7 +2,6 @@
 
 import { TopList } from "@/presentation/models/TopList";
 import { Crown } from "lucide-react";
-import Image from "next/image";
 
 export function WrappedTopList({ title, items }: TopList) {
   if (items.length === 0)
@@ -27,10 +26,9 @@ export function WrappedTopList({ title, items }: TopList) {
               <div className='absolute top-2 left-2 bg-yellow-400 text-black font-bold w-8 h-8 flex items-center justify-center rounded-lg shadow-md z-10'>
                 1
               </div>
-              <Image
+              <img
                 src={first.image}
                 alt={first.title}
-                fill
                 className='w-full h-full object-cover transition duration-300 group-hover:scale-110'
               />
               <div className='absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent'></div>
@@ -60,10 +58,9 @@ export function WrappedTopList({ title, items }: TopList) {
                 <div className='absolute top-1 left-1 bg-white text-black font-bold text-xs w-5 h-5 flex items-center justify-center rounded shadow z-10'>
                   {item.rank}
                 </div>
-                <Image
+                <img
                   src={item.image}
                   alt={item.title}
-                  fill
                   className='w-full h-full object-cover transition duration-300 group-hover:scale-110'
                 />
               </div>

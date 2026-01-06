@@ -1,7 +1,6 @@
 "use client";
 
 import { User } from "@/presentation/models/User";
-import Image from "next/image";
 
 interface HeaderProps {
   user: User;
@@ -34,11 +33,10 @@ export const WrappedHeader = ({ user, year }: HeaderProps) => (
         <h2 className='text-2xl font-bold text-white'>{user.name}</h2>
         <p className='text-sm text-gray-400'>Member since {user.memberSince}</p>
       </div>
-      <div className='relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-[#1A2130] shadow-lg'>
-        <Image
+      <div className='w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-[#1A2130] shadow-lg'>
+        <img
           src={user.avatar}
           alt='User Avatar'
-          fill
           className='w-full h-full object-cover'
         />
       </div>
