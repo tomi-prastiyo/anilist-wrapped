@@ -2,17 +2,17 @@
 
 import { useRef } from "react";
 import { toPng } from "html-to-image";
-import { WrappedExportButton } from "./WrappedExportButton";
-import { WrappedHeader } from "./WrappedHeader";
-import { WrappedStat } from "./WrappedStat";
-import { WrappedSmallStat } from "./WrappedSmallStat";
-import { WrappedTopList } from "./WrappedTopList";
-import { WrappedMonthlyChart } from "./WrappedMonthlyChart";
-import { WrappedTopTagsAndGenres } from "./WrappedTopTagsAndGenres";
-import { DailyActivityCard } from "./WrappedDailyActivity";
-import { WrappedActivityStat } from "./WrappedActivityStat";
-import { mapWrappedToDashboard } from "@/presentation/mappers/mapWrappedToDashboard";
 import { WrappedResult } from "@/domain/entities/WrappedResult";
+import { mapWrappedToDashboard } from "@/presentation/mappers/mapWrappedToDashboard";
+import { WrappedExportButton } from "@/presentation/components/wrapped-dashboard/WrappedExportButton";
+import { WrappedHeader } from "@/presentation/components/wrapped-dashboard/WrappedHeader";
+import { WrappedStat } from "@/presentation/components/wrapped-dashboard/WrappedStat";
+import { WrappedSmallStat } from "@/presentation/components/wrapped-dashboard/WrappedSmallStat";
+import { WrappedActivityStat } from "@/presentation/components/wrapped-dashboard/WrappedActivityStat";
+import { DailyActivityCard } from "@/presentation/components/wrapped-dashboard/WrappedDailyActivity";
+import { WrappedMonthlyChart } from "@/presentation/components/wrapped-dashboard/WrappedMonthlyChart";
+import { WrappedTopTagsAndGenres } from "@/presentation/components/wrapped-dashboard/WrappedTopTagsAndGenres";
+import { WrappedTopList } from "@/presentation/components/wrapped-dashboard/WrappedTopList";
 
 interface DashboardProps {
   data: WrappedResult;
@@ -80,8 +80,8 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
       {/* DASHBOARD WRAPPER */}
       <div
         ref={ref}
-        className='w-full max-w-[1200px] mx-auto rounded-3xl p-6 grid grid-cols-12 gap-4
-        bg-gradient-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
+        className='w-full max-w-300 mx-auto rounded-3xl p-6 grid grid-cols-12 gap-4
+        bg-linear-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
       >
         {/* HEADER */}
         <div className='relative col-span-12'>
