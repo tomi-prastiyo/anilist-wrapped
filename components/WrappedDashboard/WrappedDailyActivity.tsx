@@ -1,11 +1,11 @@
-import { WrappedResult } from "@/domain/entities/WrappedResult";
+import { DailyActivity } from "@/presentation/models/DailyActivity";
 
-interface DailyActivityCardProps {
-  data: WrappedResult;
+interface DailyActivityProps {
+  activity: DailyActivity;
 }
 
-export function DailyActivityCard({ data }: DailyActivityCardProps) {
-  if (!data) return null;
+export function DailyActivityCard({ activity }: DailyActivityProps) {
+  if (!activity) return null;
 
   return (
     <div className='card-bg rounded-2xl p-5 space-y-4'>
@@ -16,26 +16,17 @@ export function DailyActivityCard({ data }: DailyActivityCardProps) {
 
       <div className='flex justify-between items-center'>
         <span className='text-gray-400 text-sm'>Episode / Day</span>
-        <span className='text-white font-bold'>
-          {data.anime.episodesPerDay.toFixed(2)}
-        </span>
+        <span className='text-white font-bold'>{activity.episodePerDay}</span>
       </div>
 
       <div className='flex justify-between items-center'>
         <span className='text-gray-400 text-sm'>Chapter / Day</span>
-        <span className='text-white font-bold'>
-          {data.manga.episodesPerDay.toFixed(2)}
-        </span>
+        <span className='text-white font-bold'>{activity.chapterPerDay}</span>
       </div>
 
       <div className='flex justify-between items-center'>
         <span className='text-gray-400 text-sm'>Activity / Day</span>
-        <span className='text-white font-bold'>
-          {(
-            (data.anime.episodesPerDay + data.manga.episodesPerDay) /
-            2
-          ).toFixed(2)}
-        </span>
+        <span className='text-white font-bold'>{activity.activityPerDay}</span>
       </div>
     </div>
   );

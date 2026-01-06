@@ -2,17 +2,24 @@
 
 import { useRef } from "react";
 import { toPng } from "html-to-image";
-import { ExportButton } from "./ExportButton";
-import { Header } from "./Header";
-import { StatCard } from "./StatCard";
-import { SmallStatCard } from "./SmallStatCard";
-import { TopList } from "./TopList";
-import { MonthlyChart } from "./MonthlyChart";
-import { TopTagsAndGenres } from "./TopTagsAndGenres";
-import { DailyActivityCard } from "./DailyActivityCard";
-import { ActivityStats } from "./ActivityStatCard";
+import { WrappedExportButton } from "./WrappedExportButton";
+import { WrappedHeader } from "./WrappedHeader";
+import { WrappedStat } from "./WrappedStat";
+import { WrappedSmallStat } from "./WrappedSmallStat";
+import { WrappedTopList } from "./WrappedTopList";
+import { WrappedMonthlyChart } from "./WrappedMonthlyChart";
+import { WrappedTopTagsAndGenres } from "./WrappedTopTagsAndGenres";
+import { DailyActivityCard } from "./WrappedDailyActivity";
+import { WrappedActivityStat } from "./WrappedActivityStat";
+import { mapWrappedToDashboard } from "@/presentation/mappers/mapWrappedToDashboard";
+import { WrappedResult } from "@/domain/entities/WrappedResult";
 
-export function WrappedDashboard({ data, year }: { data: any; year: number }) {
+interface DashboardProps {
+  data: WrappedResult;
+  year: number;
+}
+
+export function WrappedDashboard({ data, year }: DashboardProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   const exportImage = async () => {
@@ -32,6 +39,8 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
       console.error("Failed to export image:", err);
     }
   };
+
+  const wrappedData = mapWrappedToDashboard(data);
 
   return (
     <div className='space-y-4'>
@@ -66,7 +75,7 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
         `}
       </style>
       {/* EXPORT BUTTON */}
-      <ExportButton onClick={exportImage} />
+      <WrappedExportButton onClick={exportImage} />
 
       {/* DASHBOARD WRAPPER */}
       <div
@@ -76,7 +85,7 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
       >
         {/* HEADER */}
         <div className='relative col-span-12'>
-          <Header user={data.user} year={year} />
+          <WrappedHeader user={wrappedData.user} year={year} />
           <div className='h-12 md:h-16'></div>
         </div>
 
@@ -87,13 +96,13 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
               {/* LEFT: Total Anime / Manga */}
               <div className='lg:col-span-5'>
                 <div className='grid grid-cols-2 gap-4 h-full'>
-                  <StatCard
+                  <WrappedStat
                     title='Total Anime Watched'
                     value={data.anime.completed}
                     subtitle='titles'
                     gradient='linear-gradient(135deg, #9810FA 0%, #E60076 100%)'
                   />
-                  <StatCard
+                  <WrappedStat
                     title='Total Manga Read'
                     value={data.manga.completed}
                     subtitle='titles'
@@ -129,7 +138,7 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                       { label: "Paused", value: data.anime.paused },
                       { label: "Drop", value: data.anime.dropped },
                     ].map((stat, i) => (
-                      <SmallStatCard
+                      <WrappedSmallStat
                         key={i}
                         label={stat.label}
                         value={stat.value}
@@ -163,7 +172,7 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                       { label: "Paused", value: data.manga.paused },
                       { label: "Drop", value: data.manga.dropped },
                     ].map((stat, i) => (
-                      <SmallStatCard
+                      <WrappedSmallStat
                         key={i}
                         label={stat.label}
                         value={stat.value}
@@ -183,25 +192,32 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
           <div className='grid grid-cols-1 lg:grid-cols-12 gap-6'>
             <div className='lg:col-span-5 space-y-6'>
               <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                <ActivityStats
+                <WrappedActivityStat
                   stats={[
                     {
+                      id: "daysActive",
                       label: "Days Active",
                       value: data.activity.daysActive,
                     },
                     {
+                      id: "mostActiveMonth",
                       label: "Most Active Day",
                       value: data.activity.mostActiveMonth,
                     },
                     {
+                      id: "listActivity",
                       label: "List Activity",
                       value: data.activity.listActivity,
                     },
-                    { label: "Status Post", value: data.activity.listActivity }, // bisa diganti kalau beda
+                    {
+                      id: "statusPost",
+                      label: "Status Post",
+                      value: data.activity.listActivity,
+                    },
                   ]}
                 />
 
-                <DailyActivityCard data={data} />
+                <DailyActivityCard activity={wrappedData.dailyActivity} />
               </div>
 
               <div className='card-bg rounded-2xl p-6'>
@@ -213,19 +229,25 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                 </div>
 
                 <div className='h-48 w-full'>
-                  <MonthlyChart data={data.anime.monthly} color='#ec4899' />
+                  <WrappedMonthlyChart
+                    data={data.anime.monthly}
+                    color='#ec4899'
+                  />
                 </div>
               </div>
-              <TopTagsAndGenres
-                topTags={data.topTags}
-                topGenres={data.topGenres}
-              />
+              <WrappedTopTagsAndGenres data={wrappedData.topTagsGenres} />
             </div>
 
             <div className='lg:col-span-7 space-y-6'>
               <div className='space-y-4'>
-                <TopList title='Top Anime' items={data.topAnime} />
-                <TopList title='Top Manga' items={data.topManga} />
+                <WrappedTopList
+                  title={wrappedData.topAnime.title}
+                  items={wrappedData.topAnime.items}
+                />
+                <WrappedTopList
+                  title={wrappedData.topManga.title}
+                  items={wrappedData.topManga.items}
+                />
               </div>
             </div>
           </div>

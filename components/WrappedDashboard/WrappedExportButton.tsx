@@ -1,4 +1,4 @@
-export const ExportButton = ({ onClick }: { onClick: () => void }) => (
+export const WrappedExportButton = ({ onClick }: { onClick: () => void }) => (
   <div className='flex justify-end'>
     <button
       onClick={onClick}

@@ -55,12 +55,12 @@ export function calculateStats(
   const topGenres = Object.entries(genreMap)
     .map(([name, value]) => ({ name, value }))
     .sort((a, b) => b.value - a.value)
-    .slice(0, 8);
+    .slice(0, 6);
 
   const topTags = Object.entries(tagMap)
     .map(([name, value]) => ({ name, value }))
     .sort((a, b) => b.value - a.value)
-    .slice(0, 10);
+    .slice(0, 5);
 
   const sortedByDate = [...filtered].sort(
     (a, b) => (a.completedAt?.month || 0) - (b.completedAt?.month || 0)

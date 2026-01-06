@@ -1,15 +1,10 @@
 "use client";
 
-import { AniListItem } from "@/presentation/models/AniListItem";
+import { TopList } from "@/presentation/models/TopList";
 import { Crown } from "lucide-react";
 import Image from "next/image";
 
-interface TopListProps {
-  title: string;
-  items: AniListItem[];
-}
-
-export function TopList({ title, items }: TopListProps) {
+export function WrappedTopList({ title, items }: TopList) {
   if (items.length === 0)
     return <div className='text-xs text-slate-500'>No data available</div>;
 
@@ -33,8 +28,8 @@ export function TopList({ title, items }: TopListProps) {
                 1
               </div>
               <Image
-                src={first.media.coverImage.large}
-                alt={first.media.title.romaji}
+                src={first.image}
+                alt={first.title}
                 fill
                 className='w-full h-full object-cover transition duration-300 group-hover:scale-110'
               />
@@ -48,7 +43,7 @@ export function TopList({ title, items }: TopListProps) {
           {first && (
             <div className='mb-6'>
               <h3 className='text-2xl font-bold text-white mb-1'>
-                {first.media.title.romaji}
+                {first.title}
               </h3>
               <span className='px-2 py-1 bg-gray-700 rounded text-xs text-gray-300'>
                 {title}
@@ -57,17 +52,17 @@ export function TopList({ title, items }: TopListProps) {
           )}
 
           <div className='grid grid-cols-4 gap-3'>
-            {rest.map((item, idx) => (
+            {rest.map((item) => (
               <div
-                key={item.media.id ?? idx}
+                key={item.rank}
                 className='relative aspect-2/3 rounded-lg overflow-hidden shadow-md group cursor-pointer'
               >
                 <div className='absolute top-1 left-1 bg-white text-black font-bold text-xs w-5 h-5 flex items-center justify-center rounded shadow z-10'>
-                  {idx + 2}
+                  {item.rank}
                 </div>
                 <Image
-                  src={item.media.coverImage.large}
-                  alt={item.media.title.romaji}
+                  src={item.image}
+                  alt={item.title}
                   fill
                   className='w-full h-full object-cover transition duration-300 group-hover:scale-110'
                 />
