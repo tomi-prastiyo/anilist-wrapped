@@ -1,18 +1,15 @@
-interface ActivityStat {
-  label: string;
-  value: string | number;
-}
+import { Stat } from "@/presentation/models/Stat";
 
 interface ActivityStatsProps {
-  stats: ActivityStat[];
+  stats: Stat[];
 }
 
-export function ActivityStats({ stats }: ActivityStatsProps) {
+export function WrappedActivityStat({ stats }: ActivityStatsProps) {
   return (
     <div className='flex flex-col gap-3'>
-      {stats.map((stat, idx) => (
+      {stats.map((stat) => (
         <div
-          key={idx}
+          key={stat.id}
           className='card-bg rounded-2xl p-3 flex justify-between items-center h-10'
         >
           <span className='text-gray-400 text-sm'>{stat.label}</span>

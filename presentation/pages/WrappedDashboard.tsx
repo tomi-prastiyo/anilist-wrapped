@@ -2,17 +2,24 @@
 
 import { useRef } from "react";
 import { toPng } from "html-to-image";
-import { ExportButton } from "./ExportButton";
-import { Header } from "./Header";
-import { StatCard } from "./StatCard";
-import { SmallStatCard } from "./SmallStatCard";
-import { TopList } from "./TopList";
-import { MonthlyChart } from "./MonthlyChart";
-import { TopTagsAndGenres } from "./TopTagsAndGenres";
-import { DailyActivityCard } from "./DailyActivityCard";
-import { ActivityStats } from "./ActivityStatCard";
+import { WrappedResult } from "@/domain/entities/WrappedResult";
+import { mapWrappedToDashboard } from "@/presentation/mappers/mapWrappedToDashboard";
+import { WrappedExportButton } from "@/presentation/components/wrapped-dashboard/WrappedExportButton";
+import { WrappedHeader } from "@/presentation/components/wrapped-dashboard/WrappedHeader";
+import { WrappedStat } from "@/presentation/components/wrapped-dashboard/WrappedStat";
+import { WrappedSmallStat } from "@/presentation/components/wrapped-dashboard/WrappedSmallStat";
+import { WrappedActivityStat } from "@/presentation/components/wrapped-dashboard/WrappedActivityStat";
+import { DailyActivityCard } from "@/presentation/components/wrapped-dashboard/WrappedDailyActivity";
+import { WrappedMonthlyChart } from "@/presentation/components/wrapped-dashboard/WrappedMonthlyChart";
+import { WrappedTopTagsAndGenres } from "@/presentation/components/wrapped-dashboard/WrappedTopTagsAndGenres";
+import { WrappedTopList } from "@/presentation/components/wrapped-dashboard/WrappedTopList";
 
-export function WrappedDashboard({ data, year }: { data: any; year: number }) {
+interface DashboardProps {
+  data: WrappedResult;
+  year: number;
+}
+
+export function WrappedDashboard({ data, year }: DashboardProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   const exportImage = async () => {
@@ -32,6 +39,8 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
       console.error("Failed to export image:", err);
     }
   };
+
+  const wrappedData = mapWrappedToDashboard(data);
 
   return (
     <div className='space-y-4'>
@@ -66,17 +75,17 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
         `}
       </style>
       {/* EXPORT BUTTON */}
-      <ExportButton onClick={exportImage} />
+      <WrappedExportButton onClick={exportImage} />
 
       {/* DASHBOARD WRAPPER */}
       <div
         ref={ref}
-        className='w-full max-w-[1200px] mx-auto rounded-3xl p-6 grid grid-cols-12 gap-4
-        bg-gradient-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
+        className='w-full max-w-300 mx-auto rounded-3xl p-6 grid grid-cols-12 gap-4
+        bg-linear-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
       >
         {/* HEADER */}
         <div className='relative col-span-12'>
-          <Header user={data.user} year={year} />
+          <WrappedHeader user={wrappedData.user} year={year} />
           <div className='h-12 md:h-16'></div>
         </div>
 
@@ -87,13 +96,13 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
               {/* LEFT: Total Anime / Manga */}
               <div className='lg:col-span-5'>
                 <div className='grid grid-cols-2 gap-4 h-full'>
-                  <StatCard
+                  <WrappedStat
                     title='Total Anime Watched'
                     value={data.anime.completed}
                     subtitle='titles'
                     gradient='linear-gradient(135deg, #9810FA 0%, #E60076 100%)'
                   />
-                  <StatCard
+                  <WrappedStat
                     title='Total Manga Read'
                     value={data.manga.completed}
                     subtitle='titles'
@@ -116,20 +125,20 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                     {[
                       {
                         label: "Episodes",
-                        value: data.anime.episodes.toLocaleString(),
+                        value: data.anime.episodes,
                       },
                       {
                         label: "Completed",
-                        value: data.anime.completed.toLocaleString(),
+                        value: data.anime.completed,
                       },
                       {
                         label: "Mean Score",
-                        value: data.anime.meanScore.toFixed(1),
+                        value: data.anime.meanScore,
                       },
                       { label: "Paused", value: data.anime.paused },
                       { label: "Drop", value: data.anime.dropped },
                     ].map((stat, i) => (
-                      <SmallStatCard
+                      <WrappedSmallStat
                         key={i}
                         label={stat.label}
                         value={stat.value}
@@ -150,20 +159,20 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                     {[
                       {
                         label: "Chapters",
-                        value: data.manga.episodes.toLocaleString(),
+                        value: data.manga.episodes,
                       },
                       {
                         label: "Completed",
-                        value: data.manga.completed.toLocaleString(),
+                        value: data.manga.completed,
                       },
                       {
                         label: "Mean Score",
-                        value: data.manga.meanScore.toFixed(1),
+                        value: data.manga.meanScore,
                       },
                       { label: "Paused", value: data.manga.paused },
                       { label: "Drop", value: data.manga.dropped },
                     ].map((stat, i) => (
-                      <SmallStatCard
+                      <WrappedSmallStat
                         key={i}
                         label={stat.label}
                         value={stat.value}
@@ -183,25 +192,32 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
           <div className='grid grid-cols-1 lg:grid-cols-12 gap-6'>
             <div className='lg:col-span-5 space-y-6'>
               <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                <ActivityStats
+                <WrappedActivityStat
                   stats={[
                     {
+                      id: "daysActive",
                       label: "Days Active",
-                      value: `${data.activity.daysActive}/366`,
+                      value: data.activity.daysActive,
                     },
                     {
+                      id: "mostActiveMonth",
                       label: "Most Active Day",
                       value: data.activity.mostActiveMonth,
                     },
                     {
+                      id: "listActivity",
                       label: "List Activity",
                       value: data.activity.listActivity,
                     },
-                    { label: "Status Post", value: data.activity.listActivity }, // bisa diganti kalau beda
+                    {
+                      id: "statusPost",
+                      label: "Status Post",
+                      value: data.activity.listActivity,
+                    },
                   ]}
                 />
 
-                <DailyActivityCard data={data} />
+                <DailyActivityCard activity={wrappedData.dailyActivity} />
               </div>
 
               <div className='card-bg rounded-2xl p-6'>
@@ -213,24 +229,24 @@ export function WrappedDashboard({ data, year }: { data: any; year: number }) {
                 </div>
 
                 <div className='h-48 w-full'>
-                  <MonthlyChart data={data.anime.monthly} color='#ec4899' />
+                  <WrappedMonthlyChart
+                    data={data.anime.monthly}
+                    color='#ec4899'
+                  />
                 </div>
               </div>
-              <TopTagsAndGenres
-                topTags={data.topTags}
-                topGenres={data.topGenres}
-              />
+              <WrappedTopTagsAndGenres data={wrappedData.topTagsGenres} />
             </div>
 
             <div className='lg:col-span-7 space-y-6'>
               <div className='space-y-4'>
-                <TopList
-                  title='Top Anime'
-                  items={data.anime.entries.slice(0, 5)}
+                <WrappedTopList
+                  title={wrappedData.topAnime.title}
+                  items={wrappedData.topAnime.items}
                 />
-                <TopList
-                  title='Top Manga'
-                  items={data.manga.entries.slice(0, 5)}
+                <WrappedTopList
+                  title={wrappedData.topManga.title}
+                  items={wrappedData.topManga.items}
                 />
               </div>
             </div>

@@ -1,4 +1,14 @@
-export const Header = ({ user, year }: { user: any; year: number }) => (
+"use client";
+
+import { User } from "@/presentation/models/User";
+import Image from "next/image";
+
+interface HeaderProps {
+  user: User;
+  year: number;
+}
+
+export const WrappedHeader = ({ user, year }: HeaderProps) => (
   <header
     className='w-full h-96 relative bg-cover bg-center flex items-end rounded-t-2xl'
     style={{
@@ -9,7 +19,7 @@ export const Header = ({ user, year }: { user: any; year: number }) => (
       <div>
         <h1 className='text-5xl md:text-7xl font-extrabold tracking-tight text-white drop-shadow-lg leading-tight'>
           YOUR <br />
-          <span className='bg-gradient-to-r from-[#3db4f2] to-[#c063ff] bg-clip-text text-transparent'>
+          <span className='bg-linear-to-r from-[#3db4f2] to-[#c063ff] bg-clip-text text-transparent'>
             {year}
           </span>
         </h1>
@@ -24,10 +34,11 @@ export const Header = ({ user, year }: { user: any; year: number }) => (
         <h2 className='text-2xl font-bold text-white'>{user.name}</h2>
         <p className='text-sm text-gray-400'>Member since {user.memberSince}</p>
       </div>
-      <div className='w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-[#1A2130] overflow-hidden shadow-lg'>
-        <img
+      <div className='relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-[#1A2130] shadow-lg'>
+        <Image
           src={user.avatar}
           alt='User Avatar'
+          fill
           className='w-full h-full object-cover'
         />
       </div>

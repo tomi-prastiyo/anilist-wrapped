@@ -1,16 +1,16 @@
-interface SmallStatCardProps {
+interface SmallStatProps {
   label: string;
   value: number | string;
   bgColor?: string;
   borderColor?: string;
 }
 
-export const SmallStatCard = ({
+export const WrappedSmallStat = ({
   label,
   value,
   bgColor = "#271932",
   borderColor = "#40225C",
-}: SmallStatCardProps) => (
+}: SmallStatProps) => (
   <div
     style={{ background: bgColor, borderColor: borderColor }}
     className='border rounded-2xl p-3 shadow-lg hover:scale-105 transition text-center'
