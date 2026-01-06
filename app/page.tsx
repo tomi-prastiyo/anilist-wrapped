@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { WrappedDashboard } from "@/presentation/components/wrapped-dashboard/WrappedDashboard";
+import { WrappedDashboard } from "@/presentation/pages/WrappedDashboard";
 import { AniListRepositoryImpl } from "@/infrastructure/anilist/AniListRepositoryImpl";
 import { getWrappedData } from "@/application/wrapped/GetWrappedData";
 
