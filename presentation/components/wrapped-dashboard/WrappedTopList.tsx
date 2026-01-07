@@ -30,7 +30,7 @@ export function WrappedTopList({ title, items }: TopList) {
 
         {/* Right Content */}
         {first && (
-          <div className='flex-1 flex flex-col justify-center items-end pr-2'>
+          <div className='flex-1 flex flex-col justify-center items-start pl-2'>
             <div>
               <div className='flex items-center gap-2.5 mb-4'>
                 <Crown className='w-5 h-5 text-yellow-400 fill-yellow-400' />
