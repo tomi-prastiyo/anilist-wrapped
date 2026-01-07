@@ -7,39 +7,69 @@ interface HeaderProps {
   year: number;
 }
 
-export const WrappedHeader = ({ user, year }: HeaderProps) => (
-  <header
-    className='w-full h-96 relative bg-cover bg-center flex items-end rounded-t-2xl'
-    style={{
-      backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 60%, #0b1622 100%), url(${user.banner})`,
-    }}
-  >
-    <div className='relative z-10 flex justify-between items-end w-full max-w-7xl mx-auto p-6 md:p-10'>
-      <div>
-        <h1 className='text-5xl md:text-7xl font-extrabold tracking-tight text-white drop-shadow-lg leading-tight'>
-          YOUR <br />
-          <span className='bg-linear-to-r from-[#3db4f2] to-[#c063ff] bg-clip-text text-transparent'>
-            {year}
-          </span>
-        </h1>
-        <p className='text-gray-300 text-lg mt-2 font-medium'>
-          AniList Wrapped
-        </p>
-      </div>
-    </div>
-
-    <div className='absolute right-6 md:right-10 bottom-0 translate-y-1/2 flex items-center gap-3 md:gap-4'>
-      <div className='text-right hidden md:block'>
-        <h2 className='text-2xl font-bold text-white'>{user.name}</h2>
-        <p className='text-sm text-gray-400'>Member since {user.memberSince}</p>
-      </div>
-      <div className='w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-[#1A2130] shadow-lg'>
-        <img
-          src={user.avatar}
-          alt='User Avatar'
-          className='w-full h-full object-cover'
+export const WrappedHeader = ({ user, year }: HeaderProps) => {
+  return (
+    <header className='relative w-full h-90 rounded-t-2xl overflow-hidden'>
+      {/* BACKGROUND BANNER */}
+      <div className='absolute left-0 -top-0.75 w-[1151.28px] h-[288.69px]'>
+        {/* IMAGE LAYER */}
+        <div
+          className='absolute inset-0 bg-cover bg-center rounded-t-2xl'
+          style={{
+            backgroundImage: `url(${user.banner})`,
+          }}
         />
+
+        {/* GRADIENT MASK */}
+        <div className='absolute inset-0 bg-linear-to-b from-black/0 to-[#0b1622]' />
+
+        {/* BLUR LAYER */}
+        <div className='absolute inset-x-0 -bottom-16 h-32 bg-[#0b1622]/80 blur-3xl' />
       </div>
-    </div>
-  </header>
-);
+
+      {/* CONTENT */}
+      <div className='relative z-10 max-w-260 h-50 mx-auto flex justify-between items-center mt-32 px-6'>
+        {/* LEFT */}
+        <div className='flex flex-col gap-6 w-66.5'>
+          {/* YOUR + YEAR */}
+          <div className='relative h-41'>
+            <h1 className='absolute top-0 left-0 text-white font-black text-[96px] leading-20.5 tracking-[-2.4px]'>
+              YOUR
+            </h1>
+            <h1 className='absolute top-20.5 left-0 font-black text-[96px] leading-20.5 tracking-[-2.4px] bg-linear-to-r from-[#C27AFF] via-[#FB64B6] to-[#00D3F2] bg-clip-text text-transparent'>
+              {year}
+            </h1>
+          </div>
+
+          {/* SUBTITLE */}
+          <p className='text-[#DAC9DE] text-[18px] font-semibold leading-3'>
+            AniList Wrapped
+          </p>
+        </div>
+
+        {/* RIGHT */}
+        <div className='flex items-end gap-4.5'>
+          {/* NAME & MEMBER */}
+          <div className='flex flex-col gap-2.5 text-right'>
+            <h2 className='text-[#F1EAEA] font-bold text-[30px] tracking-[-2.4px] leading-8'>
+              {user.name}
+            </h2>
+            <p className='text-[#DAC9DE] text-[14.7px] font-semibold leading-2.5'>
+              Member since {user.memberSince}
+            </p>
+          </div>
+
+          {/* AVATAR */}
+          <div className='w-44.75 h-44.75 rounded-full overflow-hidden border-[3.2px] border-[#14141F] shadow-lg'>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={user.avatar}
+              alt='User Avatar'
+              className='w-full h-full object-cover'
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};

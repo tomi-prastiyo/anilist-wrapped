@@ -86,7 +86,6 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
         {/* HEADER */}
         <div className='relative col-span-12'>
           <WrappedHeader user={wrappedData.user} year={year} />
-          <div className='h-12 md:h-16'></div>
         </div>
 
         {/* ANIME & MANGA TOTALS */}

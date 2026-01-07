@@ -26,6 +26,7 @@ export function WrappedTopList({ title, items }: TopList) {
               <div className='absolute top-2 left-2 bg-yellow-400 text-black font-bold w-8 h-8 flex items-center justify-center rounded-lg shadow-md z-10'>
                 1
               </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={first.image}
                 alt={first.title}
@@ -58,6 +59,7 @@ export function WrappedTopList({ title, items }: TopList) {
                 <div className='absolute top-1 left-1 bg-white text-black font-bold text-xs w-5 h-5 flex items-center justify-center rounded shadow z-10'>
                   {item.rank}
                 </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={item.image}
                   alt={item.title}
