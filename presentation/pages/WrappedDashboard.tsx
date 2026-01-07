@@ -80,7 +80,7 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
       {/* DASHBOARD WRAPPER */}
       <div
         ref={ref}
-        className='relative w-300 h-450 rounded-3xl p-6 bg-linear-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
+        className='relative w-full max-w-300 aspect-4/3 rounded-3xl p-6 bg-linear-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
       >
         {/* HEADER */}
         <WrappedHeader user={wrappedData.user} year={year} />
