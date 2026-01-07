@@ -12,16 +12,12 @@ import {
 
 interface MonthlyChartProps {
   data: number[];
-  color?: string;
 }
 
-export function WrappedMonthlyChart({
-  data,
-  color = "#ec4899",
-}: MonthlyChartProps) {
+export function WrappedMonthlyChart({ data }: MonthlyChartProps) {
   if (!data || data.length === 0) {
     return (
-      <div className='h-full flex items-center justify-center text-xs text-slate-500'>
+      <div className='h-full flex items-center justify-center text-[12px] text-[#64748B]'>
         No activity data
       </div>
     );
@@ -33,14 +29,17 @@ export function WrappedMonthlyChart({
   }));
 
   return (
-    <div className='w-full h-full'>
+    <div className='relative w-full h-full'>
       <ResponsiveContainer width='100%' height='100%'>
-        <LineChart data={chartData}>
+        <LineChart
+          data={chartData}
+          margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
+        >
           <CartesianGrid stroke='rgba(255,255,255,0.08)' vertical={false} />
 
           <XAxis
             dataKey='month'
-            tick={{ fill: "#94a3b8", fontSize: 10 }}
+            tick={{ fill: "#94A3B8", fontSize: 10 }}
             axisLine={false}
             tickLine={false}
           />
@@ -51,17 +50,20 @@ export function WrappedMonthlyChart({
               border: "1px solid rgba(255,255,255,0.1)",
               borderRadius: 8,
               fontSize: 12,
+              boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
+              pointerEvents: "none",
             }}
-            labelStyle={{ color: "#e5e7eb" }}
-            cursor={{ stroke: "rgba(255,255,255,0.1)" }}
+            labelStyle={{ color: "#E5E7EB" }}
+            cursor={{ stroke: "rgba(255,255,255,0.12)" }}
           />
 
           <Line
             type='monotone'
             dataKey='value'
-            stroke={color}
+            stroke='#EC4899'
             strokeWidth={3}
             dot={false}
+            isAnimationActive={false}
           />
         </LineChart>
       </ResponsiveContainer>

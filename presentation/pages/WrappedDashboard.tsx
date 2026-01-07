@@ -80,13 +80,13 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
       {/* DASHBOARD WRAPPER */}
       <div
         ref={ref}
-        className='w-full max-w-300 mx-auto rounded-3xl p-6 bg-linear-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
+        className='relative w-300 h-450 rounded-3xl p-6 bg-linear-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
       >
         {/* HEADER */}
         <WrappedHeader user={wrappedData.user} year={year} />
 
         {/* TOP WIDGET */}
-        <div className='flex justify-center'>
+        <div className='flex justify-center pt-6'>
           <div className='flex items-end gap-4.75 w-260 h-64.5'>
             {/* LEFT */}
             <div className='flex gap-6.25 w-136.5 h-64.5'>
@@ -137,57 +137,55 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
         </div>
 
         {/* BOTTOM WIDGET */}
-        <div className='grid grid-cols-1 lg:grid-cols-12 gap-6'>
-          <div className='lg:col-span-5 space-y-6'>
-            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-              <WrappedActivityStat
-                stats={[
-                  {
-                    id: "daysActive",
-                    label: "Days Active",
-                    value: data.activity.daysActive,
-                  },
-                  {
-                    id: "mostActiveMonth",
-                    label: "Most Active Day",
-                    value: data.activity.mostActiveMonth,
-                  },
-                  {
-                    id: "listActivity",
-                    label: "List Activity",
-                    value: data.activity.listActivity,
-                  },
-                  {
-                    id: "statusPost",
-                    label: "Status Post",
-                    value: data.activity.listActivity,
-                  },
-                ]}
-              />
-
-              <DailyActivityCard activity={wrappedData.dailyActivity} />
-            </div>
-
-            <div className='card-bg rounded-2xl p-6'>
-              <div className='flex items-center gap-2 mb-6'>
-                <div className='w-1 h-4 bg-white rounded-full'></div>
-                <h4 className='text-sm font-bold text-gray-200'>
-                  Monthly Activity
-                </h4>
-              </div>
-
-              <div className='h-48 w-full'>
-                <WrappedMonthlyChart
-                  data={data.anime.monthly}
-                  color='#ec4899'
+        <div className='flex justify-center pt-6'>
+          <div className='flex items-end gap-6.25'>
+            <div className='flex flex-col gap-7.5 w-[540.83px]'>
+              <div className='flex flex-row gap-[25.33px] w-full h-[268.39px]'>
+                <WrappedActivityStat
+                  stats={[
+                    {
+                      id: "daysActive",
+                      label: "Days Active",
+                      value: data.activity.daysActive,
+                    },
+                    {
+                      id: "mostActiveMonth",
+                      label: "Most Active Day",
+                      value: data.activity.mostActiveMonth,
+                    },
+                    {
+                      id: "listActivity",
+                      label: "List Activity",
+                      value: data.activity.listActivity,
+                    },
+                    {
+                      id: "statusPost",
+                      label: "Status Post",
+                      value: data.activity.listActivity,
+                    },
+                  ]}
                 />
+                <div className='flex-1'>
+                  <DailyActivityCard activity={wrappedData.dailyActivity} />
+                </div>
               </div>
-            </div>
-            <WrappedTopTagsAndGenres data={wrappedData.topTagsGenres} />
-          </div>
 
-          <div className='lg:col-span-7 space-y-6'>
-            <div className='space-y-4'>
+              <div className='w-full h-[265.79px] bg-[#1C1C27] border border-[#31313B] rounded-3xl px-9 py-6.25 flex flex-col gap-8.25'>
+                <div className='flex items-center gap-2.5'>
+                  <div className='w-1 h-4 bg-[#E7D3EB] rounded-full' />
+                  <h4 className='text-[14px] font-bold text-[#B7A5BB]'>
+                    Monthly Activity
+                  </h4>
+                </div>
+
+                <div className='flex-1'>
+                  <WrappedMonthlyChart data={data.anime.monthly} />
+                </div>
+              </div>
+              <WrappedTopTagsAndGenres data={wrappedData.topTagsGenres} />
+            </div>
+
+            <div className='flex flex-col gap-7.5 w-[476.35px]'>
               <WrappedTopList
                 title={wrappedData.topAnime.title}
                 items={wrappedData.topAnime.items}
