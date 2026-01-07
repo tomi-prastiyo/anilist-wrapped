@@ -1,13 +1,35 @@
-export const WrappedExportButton = ({ onClick }: { onClick: () => void }) => (
-  <div className='flex justify-end'>
-    <button
-      onClick={onClick}
-      className='px-4 py-2 rounded-xl font-bold text-white flex items-center justify-center gap-2
-                 bg-gradient-to-r from-pink-500 to-pink-400 
-                 hover:from-pink-600 hover:to-pink-500
-                 transition-shadow shadow-md hover:shadow-lg'
-    >
-      Export Image
-    </button>
-  </div>
-);
+"use client";
+
+import { Button } from "@mui/material";
+
+interface WrappedExportButtonProps {
+  onClick: () => void;
+}
+
+export const WrappedExportButton = ({ onClick }: WrappedExportButtonProps) => {
+  return (
+    <div className='flex justify-end w-full mt-4'>
+      <Button
+        onClick={onClick}
+        variant='contained'
+        sx={{
+          px: 4,
+          py: 1.5,
+          borderRadius: "1.25rem",
+          fontWeight: "bold",
+          background: "linear-gradient(90deg, #EC4899, #F472B6)",
+          color: "#fff",
+          textTransform: "none",
+          boxShadow: "0 4px 12px rgba(236,72,153,0.3)",
+          transition: "all 0.3s ease",
+          "&:hover": {
+            background: "linear-gradient(90deg, #F472B6, #EC4899)",
+            boxShadow: "0 6px 18px rgba(236,72,153,0.4)",
+          },
+        }}
+      >
+        Export Image
+      </Button>
+    </div>
+  );
+};

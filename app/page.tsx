@@ -5,6 +5,16 @@ import { WrappedDashboard } from "@/presentation/pages/WrappedDashboard";
 import { AniListRepositoryImpl } from "@/infrastructure/anilist/AniListRepositoryImpl";
 import { getWrappedData } from "@/application/wrapped/GetWrappedData";
 
+import {
+  TextField,
+  MenuItem,
+  Button,
+  ThemeProvider,
+  createTheme,
+  Box,
+} from "@mui/material";
+import { pink } from "@mui/material/colors";
+
 export default function Home() {
   const currentYear = new Date().getFullYear();
   const [username, setUsername] = useState("PdBear");
@@ -32,102 +42,133 @@ export default function Home() {
     }
   };
 
+  const theme = createTheme({
+    palette: {
+      mode: "dark",
+      primary: { main: pink[500] },
+      background: { default: "#0B0B15", paper: "#1C1C27" },
+      text: { primary: "#FFFFFF" },
+    },
+    typography: {
+      button: {
+        textTransform: "none",
+        fontWeight: "bold",
+      },
+    },
+  });
+
   return (
-    <div className='min-h-screen bg-[#0B0B15] text-white p-10 flex flex-col items-center relative'>
-      {/* INPUT & YEAR SELECT */}
-      <div className='w-full max-w-md mb-8 space-y-4'>
-        <input
-          placeholder='AniList Username'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className='w-full p-3 rounded-xl bg-[#1C1C27] border border-[#31313B] placeholder:text-zinc-500 text-white focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition'
-        />
+    <ThemeProvider theme={theme}>
+      <Box className='relative min-h-screen flex flex-col items-center p-10 bg-gradient-to-b from-[#0B0B15] to-[#1C1C27]'>
+        {/* Input & Year Select */}
+        <Box className='w-full max-w-md mb-5 space-y-6 z-10'>
+          <TextField
+            label='AniList Username'
+            variant='outlined'
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            fullWidth
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "1.25rem",
+                backgroundColor: "#1C1C27",
+                color: "#fff",
+                "& fieldset": { borderColor: "#31313B" },
+                "&:hover fieldset": { borderColor: pink[500] },
+                "&.Mui-focused fieldset": { borderColor: pink[500] },
+                boxShadow: "0 0 8px rgba(236, 72, 153, 0.3)",
+              },
+              "& .MuiInputLabel-root": { color: "#CBD5E1" },
+              "& .MuiInputLabel-root.Mui-focused": { color: pink[500] },
+            }}
+          />
+        </Box>
 
-        <select
-          value={selectedYear}
-          onChange={(e) => setSelectedYear(+e.target.value)}
-          className='w-full p-3 rounded-xl bg-[#1C1C27] border border-[#31313B] text-white placeholder:text-zinc-500 focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition'
-        >
-          {years.map((y) => (
-            <option key={y} value={y}>
-              {y}
-            </option>
-          ))}
-        </select>
+        <Box className='w-full max-w-md mb-5 space-y-6 z-10'>
+          <TextField
+            select
+            label='Select Year'
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(+e.target.value)}
+            fullWidth
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "1.25rem",
+                backgroundColor: "#1C1C27",
+                color: "#fff",
+                "& fieldset": { borderColor: "#31313B" },
+                "&:hover fieldset": { borderColor: pink[500] },
+                "&.Mui-focused fieldset": { borderColor: pink[500] },
+                boxShadow: "0 0 8px rgba(236, 72, 153, 0.3)",
+              },
+              "& .MuiInputLabel-root": { color: "#CBD5E1" },
+              "& .MuiInputLabel-root.Mui-focused": { color: pink[500] },
+            }}
+          >
+            {years.map((y) => (
+              <MenuItem key={y} value={y}>
+                {y}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
 
-        <button
-          onClick={generate}
-          disabled={loading}
-          className={`w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition 
-            ${
-              loading
-                ? "bg-zinc-700 cursor-not-allowed"
-                : "bg-gradient-to-r from-pink-500 to-pink-400 hover:from-pink-600 hover:to-pink-500"
-            }`}
-        >
+        <Box className='w-full max-w-md mb-5 space-y-6 z-10'>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={generate}
+            disabled={loading}
+            fullWidth
+            sx={{
+              py: 1.75,
+              fontSize: "1rem",
+              borderRadius: "1.5rem",
+              background: "linear-gradient(90deg, #EC4899, #F472B6)",
+              "&:hover": {
+                background: "linear-gradient(90deg, #F472B6, #EC4899)",
+              },
+              boxShadow: "0 0 12px #EC4899, 0 0 24px #F472B6",
+            }}
+          >
+            {loading ? "Generating..." : "Generate Wrapped"}
+          </Button>
+        </Box>
+
+        {/* Dashboard */}
+        <Box className={`w-full flex justify-center relative`}>
+          {data && <WrappedDashboard data={data} year={displayYear} />}
+
+          {/* Fullscreen Loading Overlay */}
           {loading && (
-            <svg
-              className='animate-spin h-5 w-5 text-white'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-            >
-              <circle
-                className='opacity-25'
-                cx='12'
-                cy='12'
-                r='10'
-                stroke='currentColor'
-                strokeWidth='4'
-              ></circle>
-              <path
-                className='opacity-75'
-                fill='currentColor'
-                d='M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z'
-              ></path>
-            </svg>
+            <Box className='absolute inset-0 bg-black/70 flex flex-col items-center justify-center z-50'>
+              <svg
+                className='animate-spin h-12 w-12 text-pink-400 mb-4'
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+              >
+                <circle
+                  className='opacity-25'
+                  cx='12'
+                  cy='12'
+                  r='10'
+                  stroke='currentColor'
+                  strokeWidth='4'
+                ></circle>
+                <path
+                  className='opacity-75'
+                  fill='currentColor'
+                  d='M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z'
+                ></path>
+              </svg>
+              <span className='text-white font-bold text-lg'>
+                Loading Wrapped Data...
+              </span>
+            </Box>
           )}
-          {loading ? "Generating..." : "Generate Wrapped"}
-        </button>
-      </div>
-
-      {/* DASHBOARD */}
-      <div
-        className={`w-full flex justify-center relative ${
-          loading ? "blur-sm" : ""
-        }`}
-      >
-        {data && <WrappedDashboard data={data} year={displayYear} />}
-
-        {/* Fullscreen Loading Overlay */}
-        {loading && (
-          <div className='absolute inset-0 bg-black/70 flex flex-col items-center justify-center z-50'>
-            <svg
-              className='animate-spin h-12 w-12 text-pink-400 mb-4'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-            >
-              <circle
-                className='opacity-25'
-                cx='12'
-                cy='12'
-                r='10'
-                stroke='currentColor'
-                strokeWidth='4'
-              ></circle>
-              <path
-                className='opacity-75'
-                fill='currentColor'
-                d='M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z'
-              ></path>
-            </svg>
-            <span className='text-white font-bold text-lg'>
-              Loading Wrapped Data...
-            </span>
-          </div>
-        )}
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
 }
