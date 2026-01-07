@@ -7,12 +7,12 @@ import { mapWrappedToDashboard } from "@/presentation/mappers/mapWrappedToDashbo
 import { WrappedExportButton } from "@/presentation/components/wrapped-dashboard/WrappedExportButton";
 import { WrappedHeader } from "@/presentation/components/wrapped-dashboard/WrappedHeader";
 import { WrappedStat } from "@/presentation/components/wrapped-dashboard/WrappedStat";
-import { WrappedSmallStat } from "@/presentation/components/wrapped-dashboard/WrappedSmallStat";
 import { WrappedActivityStat } from "@/presentation/components/wrapped-dashboard/WrappedActivityStat";
 import { DailyActivityCard } from "@/presentation/components/wrapped-dashboard/WrappedDailyActivity";
 import { WrappedMonthlyChart } from "@/presentation/components/wrapped-dashboard/WrappedMonthlyChart";
 import { WrappedTopTagsAndGenres } from "@/presentation/components/wrapped-dashboard/WrappedTopTagsAndGenres";
 import { WrappedTopList } from "@/presentation/components/wrapped-dashboard/WrappedTopList";
+import { WrappedStatSection } from "../components/wrapped-dashboard/WrappedStatSection";
 
 interface DashboardProps {
   data: WrappedResult;
@@ -80,118 +80,67 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
       {/* DASHBOARD WRAPPER */}
       <div
         ref={ref}
-        className='w-full max-w-300 mx-auto rounded-3xl p-6 grid grid-cols-12 gap-4
-        bg-linear-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
+        className='relative w-full max-w-300 aspect-4/3 rounded-3xl p-6 bg-linear-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
       >
         {/* HEADER */}
-        <div className='relative col-span-12'>
-          <WrappedHeader user={wrappedData.user} year={year} />
-          <div className='h-12 md:h-16'></div>
-        </div>
+        <WrappedHeader user={wrappedData.user} year={year} />
 
-        {/* ANIME & MANGA TOTALS */}
-        <div className='col-span-12'>
-          <div className='max-w-6xl mx-auto w-full'>
-            <div className='grid grid-cols-1 lg:grid-cols-12 gap-5'>
-              {/* LEFT: Total Anime / Manga */}
-              <div className='lg:col-span-5'>
-                <div className='grid grid-cols-2 gap-4 h-full'>
-                  <WrappedStat
-                    title='Total Anime Watched'
-                    value={data.anime.completed}
-                    subtitle='titles'
-                    gradient='linear-gradient(135deg, #9810FA 0%, #E60076 100%)'
-                  />
-                  <WrappedStat
-                    title='Total Manga Read'
-                    value={data.manga.completed}
-                    subtitle='titles'
-                    gradient='linear-gradient(313.56deg, #F54900 2.08%, #D08700 97.82%)'
-                  />
-                </div>
-              </div>
+        {/* TOP WIDGET */}
+        <div className='flex justify-center pt-6'>
+          <div className='flex items-end gap-4.75 w-260 h-64.5'>
+            {/* LEFT */}
+            <div className='flex gap-6.25 w-136.5 h-64.5'>
+              <WrappedStat
+                title='TOTAL ANIME WATCHED'
+                value={data.anime.completed}
+                subtitle='titles'
+                gradient='linear-gradient(135deg, #9810FA 0%, #E60076 100%)'
+              />
+              <WrappedStat
+                title='TOTAL MANGA READ'
+                value={data.manga.completed}
+                subtitle='titles'
+                gradient='linear-gradient(313.56deg, #F54900 2.08%, #D08700 97.82%)'
+              />
+            </div>
 
-              {/* RIGHT: Anime & Manga Stats */}
-              <div className='lg:col-span-7 flex flex-col justify-between h-full space-y-5'>
-                {/* Anime Stats */}
-                <div className='space-y-2'>
-                  <div className='flex items-center gap-2 pl-1'>
-                    <div className='w-1 h-4 bg-purple-500 rounded-full'></div>
-                    <h4 className='text-[10px] font-bold tracking-widest text-gray-400 uppercase'>
-                      Anime Stats
-                    </h4>
-                  </div>
-                  <div className='grid grid-cols-5 gap-3'>
-                    {[
-                      {
-                        label: "Episodes",
-                        value: data.anime.episodes,
-                      },
-                      {
-                        label: "Completed",
-                        value: data.anime.completed,
-                      },
-                      {
-                        label: "Mean Score",
-                        value: data.anime.meanScore,
-                      },
-                      { label: "Paused", value: data.anime.paused },
-                      { label: "Drop", value: data.anime.dropped },
-                    ].map((stat, i) => (
-                      <WrappedSmallStat
-                        key={i}
-                        label={stat.label}
-                        value={stat.value}
-                      />
-                    ))}
-                  </div>
-                </div>
+            {/* RIGHT */}
+            <div className='flex flex-col gap-6.5 w-118.75 h-59'>
+              <WrappedStatSection
+                title='Anime Stats'
+                accentGradient='linear-gradient(180deg, #C27AFF 0%, #FB64B6 100%)'
+                stats={[
+                  { label: "Episodes", value: data.anime.episodes },
+                  { label: "Completed", value: data.anime.completed },
+                  { label: "Paused", value: data.anime.paused },
+                  { label: "Drop", value: data.anime.dropped },
+                  { label: "Mean Score", value: data.anime.meanScore },
+                ]}
+              />
 
-                {/* Manga Stats */}
-                <div className='space-y-2'>
-                  <div className='flex items-center gap-2 pl-1'>
-                    <div className='w-1 h-4 bg-orange-500 rounded-full'></div>
-                    <h4 className='text-[10px] font-bold tracking-widest text-gray-400 uppercase'>
-                      Manga Stats
-                    </h4>
-                  </div>
-                  <div className='grid grid-cols-5 gap-3'>
-                    {[
-                      {
-                        label: "Chapters",
-                        value: data.manga.episodes,
-                      },
-                      {
-                        label: "Completed",
-                        value: data.manga.completed,
-                      },
-                      {
-                        label: "Mean Score",
-                        value: data.manga.meanScore,
-                      },
-                      { label: "Paused", value: data.manga.paused },
-                      { label: "Drop", value: data.manga.dropped },
-                    ].map((stat, i) => (
-                      <WrappedSmallStat
-                        key={i}
-                        label={stat.label}
-                        value={stat.value}
-                        bgColor='#2B231D'
-                        borderColor='#562C17'
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <WrappedStatSection
+                title='Manga Stats'
+                accentColor='#FBAB73'
+                titleColor='#FBAB73'
+                bgColor='#2B231D'
+                borderColor='#562C17'
+                stats={[
+                  { label: "Chapters", value: data.manga.episodes },
+                  { label: "Completed", value: data.manga.completed },
+                  { label: "Paused", value: data.manga.paused },
+                  { label: "Drop", value: data.manga.dropped },
+                  { label: "Mean Score", value: data.manga.meanScore },
+                ]}
+              />
             </div>
           </div>
         </div>
 
-        {/* Bottom Section */}
-        <div className='col-span-12'>
-          <div className='grid grid-cols-1 lg:grid-cols-12 gap-6'>
-            <div className='lg:col-span-5 space-y-6'>
-              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+        {/* BOTTOM WIDGET */}
+        <div className='flex justify-center pt-6'>
+          <div className='flex items-end gap-6.25'>
+            <div className='flex flex-col gap-7.5 w-[540.83px]'>
+              <div className='flex flex-row gap-[25.33px] w-full h-[268.39px]'>
                 <WrappedActivityStat
                   stats={[
                     {
@@ -216,39 +165,35 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
                     },
                   ]}
                 />
-
-                <DailyActivityCard activity={wrappedData.dailyActivity} />
+                <div className='flex-1'>
+                  <DailyActivityCard activity={wrappedData.dailyActivity} />
+                </div>
               </div>
 
-              <div className='card-bg rounded-2xl p-6'>
-                <div className='flex items-center gap-2 mb-6'>
-                  <div className='w-1 h-4 bg-white rounded-full'></div>
-                  <h4 className='text-sm font-bold text-gray-200'>
+              <div className='w-full h-[265.79px] bg-[#1C1C27] border border-[#31313B] rounded-3xl px-9 py-6.25 flex flex-col gap-8.25'>
+                <div className='flex items-center gap-2.5'>
+                  <div className='w-1 h-4 bg-[#E7D3EB] rounded-full' />
+                  <h4 className='text-[14px] font-bold text-[#B7A5BB]'>
                     Monthly Activity
                   </h4>
                 </div>
 
-                <div className='h-48 w-full'>
-                  <WrappedMonthlyChart
-                    data={data.anime.monthly}
-                    color='#ec4899'
-                  />
+                <div className='flex-1'>
+                  <WrappedMonthlyChart data={data.anime.monthly} />
                 </div>
               </div>
               <WrappedTopTagsAndGenres data={wrappedData.topTagsGenres} />
             </div>
 
-            <div className='lg:col-span-7 space-y-6'>
-              <div className='space-y-4'>
-                <WrappedTopList
-                  title={wrappedData.topAnime.title}
-                  items={wrappedData.topAnime.items}
-                />
-                <WrappedTopList
-                  title={wrappedData.topManga.title}
-                  items={wrappedData.topManga.items}
-                />
-              </div>
+            <div className='flex flex-col gap-7.5 w-[476.35px]'>
+              <WrappedTopList
+                title={wrappedData.topAnime.title}
+                items={wrappedData.topAnime.items}
+              />
+              <WrappedTopList
+                title={wrappedData.topManga.title}
+                items={wrappedData.topManga.items}
+              />
             </div>
           </div>
         </div>

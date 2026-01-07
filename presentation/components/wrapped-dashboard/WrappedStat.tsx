@@ -13,18 +13,18 @@ export const WrappedStat = ({
 }: StatProps) => (
   <div
     style={{ background: gradient }}
-    className='rounded-2xl p-6 shadow-xl transform transition hover:scale-105 flex flex-col justify-center items-start h-full'
+    className='relative w-full aspect-square max-w-64.5 rounded-3xl shadow-xl'
   >
-    <p className='text-[11px] font-bold tracking-widest text-white/80 uppercase mb-2 text-left'>
-      {title}
-    </p>
-    <h3 className='text-5xl font-extrabold text-white leading-none text-left'>
-      {value}
-    </h3>
-    {subtitle && (
-      <p className='text-white/90 font-semibold text-sm mt-1 text-left'>
-        {subtitle}
+    <div className='absolute left-8.75 top-8.25 w-45 flex flex-col gap-2.25'>
+      <p className='text-[12px] font-bold tracking-[1px] uppercase text-[#E7D3EB]'>
+        {title}
       </p>
-    )}
+      <h3 className='text-[96px] font-black leading-24 text-white'>{value}</h3>
+      {subtitle && (
+        <p className='text-[24px] font-black leading-9 text-white/60'>
+          {subtitle}
+        </p>
+      )}
+    </div>
   </div>
 );
