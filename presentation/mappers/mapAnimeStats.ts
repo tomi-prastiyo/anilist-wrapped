@@ -13,8 +13,20 @@ export function mapAnimeStats(stats: AniListStats): Stat[] {
       label: "Completed",
       value: stats.completed.toLocaleString(),
     },
-    { id: "meanScore", label: "Mean Score", value: stats.meanScore.toFixed(1) },
-    { id: "paused", label: "Paused", value: stats.paused },
-    { id: "dropped", label: "Dropped", value: stats.dropped },
+    {
+      id: "paused",
+      label: "Paused",
+      value: stats.paused.toLocaleString(),
+    },
+    {
+      id: "dropped",
+      label: "Dropped",
+      value: stats.dropped.toLocaleString(),
+    },
+    {
+      id: "meanScore",
+      label: "Mean Score",
+      value: stats.meanScore.toFixed(1),
+    },
   ];
 }

@@ -1,9 +1,10 @@
 import { WrappedResult } from "@/domain/entities/WrappedResult";
 import { Dashboard } from "../models/Dashboard";
-import { mapAnimeStats } from "./mapStats";
+import { mapAnimeStats } from "./mapAnimeStats";
 import { mapDailyActivity } from "./mapDailyActivity";
 import { mapTopList } from "./mapTopList";
 import { mapTopTagsGenres } from "./mapTopTagsGenres";
+import { mapMangaStats } from "./mapMangaStats";
 
 export function mapWrappedToDashboard(result: WrappedResult): Dashboard {
   return {
@@ -14,11 +15,14 @@ export function mapWrappedToDashboard(result: WrappedResult): Dashboard {
       memberSince: String(result.user.memberSince),
     },
 
-    dailyActivity: mapDailyActivity(result),
-    monthly: result.anime.monthly,
+    totalAnimeWatched: result.anime.completed,
+    totalMangaRead: result.manga.completed,
 
     animeStats: mapAnimeStats(result.anime),
-    mangaStats: mapAnimeStats(result.manga),
+    mangaStats: mapMangaStats(result.manga),
+
+    dailyActivity: mapDailyActivity(result),
+    monthly: result.anime.monthly,
 
     topAnime: mapTopList("Top Anime", result.topAnime),
     topManga: mapTopList("Top Manga", result.topManga),

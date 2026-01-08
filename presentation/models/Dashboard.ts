@@ -7,11 +7,14 @@ import { User } from "./User";
 export interface Dashboard {
   user: User;
 
-  dailyActivity: DailyActivity;
-  monthly: number[];
+  totalAnimeWatched: number;
+  totalMangaRead: number;
 
   animeStats: Stat[];
   mangaStats: Stat[];
+
+  dailyActivity: DailyActivity;
+  monthly: number[];
 
   topAnime: TopList;
   topManga: TopList;
