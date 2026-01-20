@@ -7,17 +7,17 @@ import { User } from "./User";
 export interface Dashboard {
   user: User;
 
-  totalAnimeWatched: number;
-  totalMangaRead: number;
+  // totalAnimeWatched: number;
+  // totalMangaRead: number;
 
-  animeStats: Stat[];
-  mangaStats: Stat[];
+  // animeStats: Stat[];
+  // mangaStats: Stat[];
 
-  dailyActivity: DailyActivity;
-  monthly: number[];
+  // dailyActivity: DailyActivity;
+  // monthly: number[];
 
-  topAnime: TopList;
-  topManga: TopList;
+  // topAnime: TopList;
+  // topManga: TopList;
 
-  topTagsGenres: TopTagsGenres;
+  // topTagsGenres: TopTagsGenres;
 }

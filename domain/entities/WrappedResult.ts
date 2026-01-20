@@ -8,29 +8,29 @@ import { WrappedPercentile } from "./WrappedPercentile";
 export interface WrappedResult {
   user: WrappedUser;
 
-  anime: AniListStats;
-  manga: AniListStats;
+  // anime: AniListStats;
+  // manga: AniListStats;
 
-  activity: WrappedActivity;
+  // activity: WrappedActivity;
 
-  monthly: number[];
+  // monthly: number[];
 
-  topGenres: {
-    name: string;
-    value: number;
-  }[];
+  // topGenres: {
+  //   name: string;
+  //   value: number;
+  // }[];
 
-  topTags: {
-    name: string;
-    value: number;
-  }[];
+  // topTags: {
+  //   name: string;
+  //   value: number;
+  // }[];
 
-  topAnime: AniListEntry[];
-  topManga: AniListEntry[];
+  // topAnime: AniListEntry[];
+  // topManga: AniListEntry[];
 
-  firstAnime: AniListEntry | null;
-  lastAnime: AniListEntry | null;
+  // firstAnime: AniListEntry | null;
+  // lastAnime: AniListEntry | null;
 
-  percentile: WrappedPercentile;
-  insight: WrappedInsight;
+  // percentile: WrappedPercentile;
+  // insight: WrappedInsight;
 }

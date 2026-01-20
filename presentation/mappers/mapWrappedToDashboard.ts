@@ -15,18 +15,18 @@ export function mapWrappedToDashboard(result: WrappedResult): Dashboard {
       memberSince: String(result.user.memberSince),
     },
 
-    totalAnimeWatched: result.anime.completed,
-    totalMangaRead: result.manga.completed,
+    // totalAnimeWatched: result.anime.completed,
+    // totalMangaRead: result.manga.completed,
 
-    animeStats: mapAnimeStats(result.anime),
-    mangaStats: mapMangaStats(result.manga),
+    // animeStats: mapAnimeStats(result.anime),
+    // mangaStats: mapMangaStats(result.manga),
 
-    dailyActivity: mapDailyActivity(result),
-    monthly: result.anime.monthly,
+    // dailyActivity: mapDailyActivity(result),
+    // monthly: result.anime.monthly,
 
-    topAnime: mapTopList("Top Anime", result.topAnime),
-    topManga: mapTopList("Top Manga", result.topManga),
+    // topAnime: mapTopList("Top Anime", result.topAnime),
+    // topManga: mapTopList("Top Manga", result.topManga),
 
-    topTagsGenres: mapTopTagsGenres(result),
+    // topTagsGenres: mapTopTagsGenres(result),
   };
 }

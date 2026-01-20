@@ -4,9 +4,33 @@ import {
 } from "@/domain/repositories/AniListRepository";
 import { AniListEntry } from "@/domain/entities/AniListEntry";
 import { aniListRequest } from "./AniListClient";
-import { USER_QUERY, MEDIA_LIST_QUERY } from "./AniListQueries";
+import {
+  USER_QUERY,
+  MEDIA_LIST_QUERY,
+  ACTIVITY_QUERY,
+  MEAN_SCORE_QUERY,
+} from "./AniListQueries";
 import { AniListUserResponse } from "@/domain/dto/AniListUserResponse";
 import { AniListMediaListResponse } from "@/domain/dto/AniListMediaListResponse";
+import { getYearRange } from "@/shared/utils/utils";
+import { AniListActivityResponse } from "@/domain/dto/AniListActivityResponse";
+import { AniListActivity } from "@/domain/entities/AniListActivity";
+import { AniListMediaList } from "@/domain/entities/AniListMediaList";
+import { AniListMeanScoreResponse } from "@/domain/dto/AniListMeanScoreResponse";
+
+type ActivityVariables = {
+  userId: number;
+  type: "MEDIA_LIST";
+  page: number;
+  createdAtGreater: number;
+  createdAtLesser: number;
+};
+
+type MeanScoreVariables = {
+  userId: number;
+  mediaIdIn: number[];
+  page: number;
+};
 
 type MediaListVariables = {
   name: string;
@@ -26,6 +50,7 @@ export class AniListRepositoryImpl implements AniListRepository {
     }
 
     return {
+      id: user.id,
       name: user.name,
       avatar: user.avatar?.large ?? "",
       banner: user.bannerImage ?? null,
@@ -43,7 +68,7 @@ export class AniListRepositoryImpl implements AniListRepository {
 
   private async fetchMedia(
     username: string,
-    type: "ANIME" | "MANGA"
+    type: "ANIME" | "MANGA",
   ): Promise<AniListEntry[]> {
     const data = await aniListRequest<
       AniListMediaListResponse,
@@ -74,7 +99,105 @@ export class AniListRepositoryImpl implements AniListRepository {
             name: t.name,
           })),
         },
-      }))
+      })),
     );
+  }
+
+  async getAllActivitiesByYear(
+    userId: number,
+    year: number,
+  ): Promise<AniListActivity[]> {
+    const { start, end } = getYearRange(year);
+    // console.log("Fetching activities for user", userId);
+    // console.log("Fetching activities from", start, "to", end);
+
+    let page = 1;
+    let hasNextPage = true;
+    const results: AniListActivity[] = [];
+
+    while (hasNextPage) {
+      const data = await aniListRequest<
+        AniListActivityResponse,
+        ActivityVariables
+      >(ACTIVITY_QUERY, {
+        userId: userId,
+        type: "MEDIA_LIST",
+        page,
+        createdAtGreater: start,
+        createdAtLesser: end,
+      });
+      // console.log("Fetched page", data.Page.activities);
+
+      const activities = data.Page.activities ?? [];
+
+      if (activities.length === 0) break;
+
+      results.push(
+        ...activities.map((a) => ({
+          type: a.type,
+          status: a.status,
+          progress: a.progress,
+          media: a.media,
+          likes: a.likes,
+          createdAt: a.createdAt,
+        })),
+      );
+      // console.log("Fetched activities", results);
+
+      hasNextPage = data.Page.pageInfo.hasNextPage;
+      page++;
+      // console.log("Has next page", hasNextPage);
+      // console.log("Fetched page", page);
+
+      await new Promise((res) => setTimeout(res, 300));
+    }
+
+    return results;
+  }
+
+  async getMeanScoreByAnimeOrMangaIds(
+    userId: number,
+    mediaIds: number[],
+  ): Promise<{
+    meanScore: number;
+  }> {
+    let page = 1;
+    let hasNextPage = true;
+    const scores: number[] = [];
+
+    while (hasNextPage) {
+      const data = await aniListRequest<
+        AniListMeanScoreResponse,
+        MeanScoreVariables
+      >(MEAN_SCORE_QUERY, {
+        userId,
+        mediaIdIn: [...mediaIds],
+        page,
+      });
+
+      const mediaLists = data.Page.mediaList ?? [];
+
+      if (mediaLists.length === 0) break;
+
+      for (const item of mediaLists) {
+        if (typeof item.score === "number" && item.score > 0) {
+          scores.push(item.score);
+        }
+      }
+
+      hasNextPage = data.Page.pageInfo.hasNextPage;
+      page++;
+
+      await new Promise((res) => setTimeout(res, 300));
+    }
+
+    if (scores.length === 0) {
+      return { meanScore: 0 };
+    }
+
+    const total = scores.reduce((a, b) => a + b, 0);
+    return {
+      meanScore: Number((total / scores.length).toFixed(2)),
+    };
   }
 }

@@ -59,7 +59,7 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box className='relative min-h-screen flex flex-col items-center p-10 bg-gradient-to-b from-[#0B0B15] to-[#1C1C27]'>
+      <Box className='relative min-h-screen flex flex-col items-center p-10 bg-linear-to-b from-[#0B0B15] to-[#1C1C27]'>
         {/* Input & Year Select */}
         <Box className='w-full max-w-md mb-5 space-y-6 z-10'>
           <TextField
