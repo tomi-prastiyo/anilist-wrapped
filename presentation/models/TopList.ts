@@ -13,6 +13,8 @@ export interface TopList {
     tags: {
       name: string;
     }[];
-    seasonYear: number;
+    startDate: {
+      year: number;
+    };
   };
 }

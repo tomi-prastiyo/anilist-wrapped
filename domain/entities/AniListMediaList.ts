@@ -13,6 +13,8 @@ export interface AniListMediaList {
     tags: {
       name: string;
     }[];
-    seasonYear: number;
+    startDate: {
+      year: number;
+    };
   };
 }

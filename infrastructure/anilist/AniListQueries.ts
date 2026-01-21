@@ -81,7 +81,9 @@ query ($page: Int, $mediaIdIn: [Int], $userId: Int) {
         tags {
           name
         }
-        seasonYear
+        startDate {
+          year
+        }
       }
     }
   }

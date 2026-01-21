@@ -22,7 +22,9 @@ export interface AniListMediaListResponse {
         tags: {
           name: string;
         }[];
-        seasonYear: number;
+        startDate: {
+          year: number;
+        };
       };
     }[];
   };
