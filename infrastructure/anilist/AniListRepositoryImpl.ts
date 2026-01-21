@@ -149,7 +149,9 @@ export class AniListRepositoryImpl implements AniListRepository {
       // console.log("Has next page", hasNextPage);
       // console.log("Fetched page", page);
 
-      await new Promise((res) => setTimeout(res, 300));
+      if (hasNextPage) {
+        await new Promise((res) => setTimeout(res, 300));
+      }
     }
 
     return results;
@@ -160,10 +162,12 @@ export class AniListRepositoryImpl implements AniListRepository {
     mediaIds: number[],
   ): Promise<{
     meanScore: number;
+    topAnime: AniListMediaList[];
   }> {
     let page = 1;
     let hasNextPage = true;
     const scores: number[] = [];
+    const mediaMap = new Map<number, AniListMediaList>();
 
     while (hasNextPage) {
       const data = await aniListRequest<
@@ -183,21 +187,106 @@ export class AniListRepositoryImpl implements AniListRepository {
         if (typeof item.score === "number" && item.score > 0) {
           scores.push(item.score);
         }
+
+        if (item.media) {
+          mediaMap.set(item.media.id, {
+            score: item.score,
+            media: item.media,
+          });
+        }
       }
 
       hasNextPage = data.Page.pageInfo.hasNextPage;
       page++;
 
-      await new Promise((res) => setTimeout(res, 300));
+      if (hasNextPage) {
+        await new Promise((res) => setTimeout(res, 300));
+      }
     }
 
-    if (scores.length === 0) {
-      return { meanScore: 0 };
-    }
+    // ===== MEAN SCORE =====
+    const meanScore =
+      scores.length === 0
+        ? 0
+        : Number(
+            (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2),
+          );
 
-    const total = scores.reduce((a, b) => a + b, 0);
+    // ===== TOP 5 ANIME =====
+    const topAnime = [...mediaMap.values()]
+      .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
+      .slice(0, 5);
+
     return {
-      meanScore: Number((total / scores.length).toFixed(2)),
+      meanScore,
+      topAnime,
+    };
+  }
+
+  async getTopTagsAndTopGenresByAnimeAndMangaIds(
+    userId: number,
+    mediaIds: number[],
+  ): Promise<{
+    topTags: { name: string; count: number }[];
+    topGenres: { name: string; count: number }[];
+  }> {
+    let page = 1;
+    let hasNextPage = true;
+    const tagCount = new Map<string, number>();
+    const genreCount = new Map<string, number>();
+
+    while (hasNextPage) {
+      const data = await aniListRequest<
+        AniListMeanScoreResponse,
+        MeanScoreVariables
+      >(MEAN_SCORE_QUERY, {
+        userId,
+        mediaIdIn: [...mediaIds],
+        page,
+      });
+
+      const mediaLists = data.Page.mediaList ?? [];
+
+      if (mediaLists.length === 0) break;
+
+      for (const item of mediaLists) {
+        const media = item.media;
+        if (!media) continue;
+
+        // ===== GENRES =====
+        media.genres?.forEach((genre: string) => {
+          genreCount.set(genre, (genreCount.get(genre) || 0) + 1);
+        });
+
+        // ===== TAGS =====
+        media.tags?.forEach((tag: { name: string }) => {
+          tagCount.set(tag.name, (tagCount.get(tag.name) || 0) + 1);
+        });
+      }
+
+      hasNextPage = data.Page.pageInfo.hasNextPage;
+      page++;
+
+      if (hasNextPage) {
+        await new Promise((res) => setTimeout(res, 300));
+      }
+    }
+
+    // ===== TOP 5 TAGS =====
+    const topTags = [...tagCount.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([name, count]) => ({ name, count }));
+
+    // ===== TOP 6 GENRES (RADAR) =====
+    const topGenres = [...genreCount.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6)
+      .map(([name, count]) => ({ name, count }));
+
+    return {
+      topTags,
+      topGenres,
     };
   }
 }

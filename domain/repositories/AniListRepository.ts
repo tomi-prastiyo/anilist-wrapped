@@ -27,4 +27,12 @@ export interface AniListRepository {
   ): Promise<{
     meanScore: number;
   }>;
+
+  getTopTagsAndTopGenresByAnimeAndMangaIds(
+    userId: number,
+    mediaIds: number[],
+  ): Promise<{
+    topTags: { name: string; count: number }[];
+    topGenres: { name: string; count: number }[];
+  }>;
 }

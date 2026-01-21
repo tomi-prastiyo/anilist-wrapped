@@ -16,6 +16,7 @@ export interface AniListStats {
 
   animeIds: number[];
   mangaIds: number[];
+  animeAndMangaIds: number[];
 
   daysActive: string;
   mostActiveDay: string;
@@ -25,6 +26,11 @@ export interface AniListStats {
   episodePerDay: number;
   chapterPerDay: number;
   activityPerDay: number;
+
+  monthlyActivity: {
+    month: string;
+    count: number;
+  }[];
   // entries: AniListEntry[];
 
   // episodes: number;

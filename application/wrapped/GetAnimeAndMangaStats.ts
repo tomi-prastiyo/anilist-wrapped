@@ -25,6 +25,8 @@ export function animeAndMangaStats(
 
   let totalActivitiesInYear = 0;
 
+  const monthlyActivity = new Array(12).fill(0);
+
   const isLeapYear = (year: number): boolean =>
     (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 
@@ -62,6 +64,10 @@ export function animeAndMangaStats(
 
     // ================== TOTAL ACTIVITIES =================
     totalActivitiesInYear++;
+
+    // ================== MONTHLY ACTIVITY =================
+    const monthIndex = activityDate.getMonth();
+    monthlyActivity[monthIndex]++;
 
     // ================= ANIME =================
     if (activity.type === "ANIME_LIST") {
@@ -145,6 +151,27 @@ export function animeAndMangaStats(
     (totalActivitiesInYear / activeDayCount).toFixed(2),
   );
 
+  // ================= MONTHLY ACTIVITY =================
+  const monthLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const monthlyActivityChart = monthLabels.map((month, index) => ({
+    month,
+    count: monthlyActivity[index],
+  }));
+
   return {
     totalAnimeTitles: animeTitles.size,
     totalMangaTitles: mangaTitles.size,
@@ -163,6 +190,7 @@ export function animeAndMangaStats(
 
     animeIds: [...animeTitles],
     mangaIds: [...mangaTitles],
+    animeAndMangaIds: [...animeTitles, ...mangaTitles],
 
     daysActive: `${activeDays.size}/${totalDaysInYear}`,
     mostActiveDay,
@@ -172,5 +200,7 @@ export function animeAndMangaStats(
     episodePerDay,
     chapterPerDay,
     activityPerDay,
+
+    monthlyActivity: monthlyActivityChart,
   };
 }

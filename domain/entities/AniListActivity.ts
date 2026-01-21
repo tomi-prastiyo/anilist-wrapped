@@ -10,12 +10,6 @@ export interface AniListActivity {
     coverImage: {
       large: string;
     };
-    format: string;
-    genres: string[];
-    tags: {
-      name: string;
-    }[];
-    seasonYear: number;
   };
   likes?: {
     name: string;

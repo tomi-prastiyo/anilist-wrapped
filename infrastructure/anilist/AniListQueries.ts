@@ -67,12 +67,6 @@ query (
           coverImage {
             large
           }
-          format
-          genres
-          tags {
-            name
-          }
-          seasonYear
         }
         likes {
           name
@@ -97,12 +91,19 @@ query ($page: Int, $mediaIdIn: [Int], $userId: Int) {
     mediaList(mediaId_in: $mediaIdIn, userId: $userId) {
       score(format: POINT_10)
       media {
+        id
         title {
           userPreferred
         }
         coverImage {
           large
         }
+        format
+        genres
+        tags {
+          name
+        }
+        seasonYear
       }
     }
   }

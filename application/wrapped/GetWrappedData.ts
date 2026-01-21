@@ -20,12 +20,20 @@ export async function getWrappedData(
     user.id,
     stats.animeIds,
   );
+  stats.totalAnimeMeanScore = animeMeanScore.meanScore;
   console.log("Anime mean score fetched:", animeMeanScore);
   const mangaMeanScore = await repo.getMeanScoreByAnimeOrMangaIds(
     user.id,
     stats.mangaIds,
   );
+  stats.totalMangaMeanScore = mangaMeanScore.meanScore;
   console.log("Manga mean score fetched:", mangaMeanScore);
+  const topTagsAndTopGenres =
+    await repo.getTopTagsAndTopGenresByAnimeAndMangaIds(
+      user.id,
+      stats.animeAndMangaIds,
+    );
+  console.log("Top tags and genres fetched:", topTagsAndTopGenres);
   // const mostActiveMonth = getMostActiveMonth(stats.monthly);
   // const animeEntries = await repo.getAnimeEntries(username);
   // const mangaEntries = await repo.getMangaEntries(username);
