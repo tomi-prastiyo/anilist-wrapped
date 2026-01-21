@@ -9,7 +9,7 @@ import { getYearRange } from "@/shared/utils/utils";
 import { AniListActivityResponse } from "@/domain/dto/AniListActivityResponse";
 import { AniListActivity } from "@/domain/entities/AniListActivity";
 import { AniListMediaList } from "@/domain/entities/AniListMediaList";
-import { AniListMeanScoreResponse } from "@/domain/dto/AniListMeanScoreResponse";
+import { AniListMediaListResponse } from "@/domain/dto/AniListMediaListResponse";
 
 type ActivityVariables = {
   userId: number;
@@ -114,7 +114,7 @@ export class AniListRepositoryImpl implements AniListRepository {
 
     while (hasNextPage) {
       const data = await aniListRequest<
-        AniListMeanScoreResponse,
+        AniListMediaListResponse,
         MeanScoreVariables
       >(MEAN_SCORE_QUERY, {
         userId,
@@ -180,7 +180,7 @@ export class AniListRepositoryImpl implements AniListRepository {
 
     while (hasNextPage) {
       const data = await aniListRequest<
-        AniListMeanScoreResponse,
+        AniListMediaListResponse,
         MeanScoreVariables
       >(MEAN_SCORE_QUERY, {
         userId,

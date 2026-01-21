@@ -1,10 +1,5 @@
 import { WrappedResult } from "@/domain/entities/WrappedResult";
 import { Dashboard } from "../models/Dashboard";
-import { mapAnimeStats } from "./mapAnimeStats";
-import { mapDailyActivity } from "./mapDailyActivity";
-import { mapTopList } from "./mapTopList";
-import { mapTopTagsGenres } from "./mapTopTagsGenres";
-import { mapMangaStats } from "./mapMangaStats";
 
 export function mapWrappedToDashboard(result: WrappedResult): Dashboard {
   return {
@@ -18,18 +13,33 @@ export function mapWrappedToDashboard(result: WrappedResult): Dashboard {
     totalAnimeWatched: result.totalAnimeCompleted,
     totalMangaRead: result.totalMangaCompleted,
 
-    // totalAnimeWatched: result.anime.completed,
-    // totalMangaRead: result.manga.completed,
+    totalAnimeEpisodes: result.totalAnimeEpisodes,
+    totalAnimeCompleted: result.totalAnimeCompleted,
+    totalAnimePaused: result.totalAnimePaused,
+    totalAnimeDropped: result.totalAnimeDropped,
+    totalAnimeMeanScore: result.totalAnimeMeanScore,
 
-    // animeStats: mapAnimeStats(result.anime),
-    // mangaStats: mapMangaStats(result.manga),
+    totalMangaChapters: result.totalMangaChapters,
+    totalMangaCompleted: result.totalMangaCompleted,
+    totalMangaPaused: result.totalMangaPaused,
+    totalMangaDropped: result.totalMangaDropped,
+    totalMangaMeanScore: result.totalMangaMeanScore,
 
-    // dailyActivity: mapDailyActivity(result),
-    // monthly: result.anime.monthly,
+    daysActive: result.daysActive,
+    mostActiveDay: result.mostActiveDay,
+    listActivity: result.listActivity,
+    bestBuddy: result.bestBuddy,
 
-    // topAnime: mapTopList("Top Anime", result.topAnime),
-    // topManga: mapTopList("Top Manga", result.topManga),
+    episodePerDay: result.episodePerDay,
+    chapterPerDay: result.chapterPerDay,
+    activityPerDay: result.activityPerDay,
 
-    // topTagsGenres: mapTopTagsGenres(result),
+    monthlyActivity: result.monthlyActivity,
+
+    topGenres: result.topGenres,
+    topTags: result.topTags,
+
+    topAnime: result.topAnime,
+    topManga: result.topManga,
   };
 }

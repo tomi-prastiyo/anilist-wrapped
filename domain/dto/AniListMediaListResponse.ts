@@ -1,29 +1,29 @@
 export interface AniListMediaListResponse {
-  MediaListCollection?: {
-    lists?: {
-      entries?: {
-        status: string;
-        progress: number;
-        score: number;
-        completedAt?: {
-          year?: number | null;
-          month?: number | null;
-          day?: number | null;
+  Page: {
+    pageInfo: {
+      total: number;
+      perPage: number;
+      currentPage: number;
+      lastPage: number;
+      hasNextPage: boolean;
+    };
+    mediaList?: {
+      score?: number;
+      media?: {
+        id: number;
+        title: {
+          userPreferred: string;
         };
-        media: {
-          id: number;
-          title: {
-            romaji: string;
-          };
-          coverImage: {
-            large: string;
-          };
-          genres: string[];
-          tags: {
-            name: string;
-          }[];
+        coverImage: {
+          large: string;
         };
-      }[];
+        format: string;
+        genres: string[];
+        tags: {
+          name: string;
+        }[];
+        seasonYear: number;
+      };
     }[];
   };
 }

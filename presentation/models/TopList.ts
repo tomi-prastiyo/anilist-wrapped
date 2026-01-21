@@ -1,11 +1,18 @@
 export interface TopList {
-  title: string;
-  items: {
+  score?: number;
+  media?: {
     id: number;
-    title: string;
-    image: string;
-    seasonYear: number;
+    title: {
+      userPreferred: string;
+    };
+    coverImage: {
+      large: string;
+    };
     format: string;
-    rank: number;
-  }[];
+    genres: string[];
+    tags: {
+      name: string;
+    }[];
+    seasonYear: number;
+  };
 }

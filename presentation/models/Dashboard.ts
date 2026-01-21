@@ -1,7 +1,4 @@
-import { DailyActivity } from "./DailyActivity";
-import { Stat } from "./Stat";
 import { TopList } from "./TopList";
-import { TopTagsGenres } from "./TopTagsGenres";
 import { User } from "./User";
 
 export interface Dashboard {
@@ -10,14 +7,42 @@ export interface Dashboard {
   totalAnimeWatched: number;
   totalMangaRead: number;
 
-  // animeStats: Stat[];
-  // mangaStats: Stat[];
+  totalAnimeEpisodes: number;
+  totalAnimeCompleted: number;
+  totalAnimePaused: number;
+  totalAnimeDropped: number;
+  totalAnimeMeanScore: number;
 
-  // dailyActivity: DailyActivity;
-  // monthly: number[];
+  totalMangaChapters: number;
+  totalMangaCompleted: number;
+  totalMangaPaused: number;
+  totalMangaDropped: number;
+  totalMangaMeanScore: number;
 
-  // topAnime: TopList;
-  // topManga: TopList;
+  daysActive: string;
+  mostActiveDay: string;
+  listActivity: number;
+  bestBuddy: string;
 
-  // topTagsGenres: TopTagsGenres;
+  episodePerDay: number;
+  chapterPerDay: number;
+  activityPerDay: number;
+
+  monthlyActivity: {
+    month: string;
+    count: number;
+  }[];
+
+  topGenres: {
+    name: string;
+    count: number;
+  }[];
+
+  topTags: {
+    name: string;
+    count: number;
+  }[];
+
+  topAnime: TopList[];
+  topManga: TopList[];
 }
