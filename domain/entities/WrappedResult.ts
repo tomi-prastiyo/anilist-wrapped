@@ -1,36 +1,48 @@
-import { AniListStats } from "./AniListStats";
-import { AniListEntry } from "./AniListEntry";
 import { WrappedUser } from "./WrappedUser";
-import { WrappedActivity } from "./WrappedActivity";
-import { WrappedInsight } from "./WrappedInsight";
-import { WrappedPercentile } from "./WrappedPercentile";
+import { AniListMediaList } from "./AniListMediaList";
 
 export interface WrappedResult {
   user: WrappedUser;
 
-  // anime: AniListStats;
-  // manga: AniListStats;
+  totalAnimeTitles: number;
+  totalMangaTitles: number;
 
-  // activity: WrappedActivity;
+  totalAnimeEpisodes: number;
+  totalAnimeCompleted: number;
+  totalAnimePaused: number;
+  totalAnimeDropped: number;
+  totalAnimeMeanScore: number;
 
-  // monthly: number[];
+  totalMangaChapters: number;
+  totalMangaCompleted: number;
+  totalMangaPaused: number;
+  totalMangaDropped: number;
+  totalMangaMeanScore: number;
 
-  // topGenres: {
-  //   name: string;
-  //   value: number;
-  // }[];
+  daysActive: string;
+  mostActiveDay: string;
+  listActivity: number;
+  bestBuddy: string;
 
-  // topTags: {
-  //   name: string;
-  //   value: number;
-  // }[];
+  episodePerDay: number;
+  chapterPerDay: number;
+  activityPerDay: number;
 
-  // topAnime: AniListEntry[];
-  // topManga: AniListEntry[];
+  monthlyActivity: {
+    month: string;
+    count: number;
+  }[];
 
-  // firstAnime: AniListEntry | null;
-  // lastAnime: AniListEntry | null;
+  topGenres: {
+    name: string;
+    count: number;
+  }[];
 
-  // percentile: WrappedPercentile;
-  // insight: WrappedInsight;
+  topTags: {
+    name: string;
+    count: number;
+  }[];
+
+  topAnime: AniListMediaList[];
+  topManga: AniListMediaList[];
 }

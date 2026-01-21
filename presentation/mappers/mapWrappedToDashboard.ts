@@ -15,6 +15,9 @@ export function mapWrappedToDashboard(result: WrappedResult): Dashboard {
       memberSince: String(result.user.memberSince),
     },
 
+    totalAnimeWatched: result.totalAnimeCompleted,
+    totalMangaRead: result.totalMangaCompleted,
+
     // totalAnimeWatched: result.anime.completed,
     // totalMangaRead: result.manga.completed,
 

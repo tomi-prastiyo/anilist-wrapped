@@ -7,8 +7,8 @@ import { User } from "./User";
 export interface Dashboard {
   user: User;
 
-  // totalAnimeWatched: number;
-  // totalMangaRead: number;
+  totalAnimeWatched: number;
+  totalMangaRead: number;
 
   // animeStats: Stat[];
   // mangaStats: Stat[];

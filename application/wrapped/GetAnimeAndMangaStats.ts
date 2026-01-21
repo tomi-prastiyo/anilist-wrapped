@@ -1,5 +1,6 @@
 import { AniListActivity } from "@/domain/entities/AniListActivity";
 import { AniListStats } from "@/domain/entities/AniListStats";
+import { MONTHS } from "@/shared/constants/months";
 
 export function animeAndMangaStats(
   activities: AniListActivity[],
@@ -152,22 +153,7 @@ export function animeAndMangaStats(
   );
 
   // ================= MONTHLY ACTIVITY =================
-  const monthLabels = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  const monthlyActivityChart = monthLabels.map((month, index) => ({
+  const monthlyActivityChart = MONTHS.map((month, index) => ({
     month,
     count: monthlyActivity[index],
   }));
