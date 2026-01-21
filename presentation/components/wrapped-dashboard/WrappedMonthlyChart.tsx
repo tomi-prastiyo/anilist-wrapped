@@ -1,6 +1,5 @@
 "use client";
 
-import { MONTHS } from "@/shared/constants/months";
 import {
   LineChart,
   Line,
@@ -12,7 +11,10 @@ import {
 } from "recharts";
 
 interface MonthlyChartProps {
-  data: number[];
+  data: {
+    month: string;
+    count: number;
+  }[];
 }
 
 export function WrappedMonthlyChart({ data }: MonthlyChartProps) {
@@ -24,24 +26,19 @@ export function WrappedMonthlyChart({ data }: MonthlyChartProps) {
     );
   }
 
-  const chartData = data.map((value, i) => ({
-    month: MONTHS[i],
-    value,
-  }));
-
   return (
     <div className='relative w-full h-full'>
       <ResponsiveContainer width='100%' height='100%'>
         <LineChart
-          data={chartData}
+          data={data}
           margin={{ top: 16, right: 16, left: 0, bottom: 0 }}
         >
-          {/* Grid untuk X & Y */}
+          {/* Grid */}
           <CartesianGrid
             stroke='rgba(255,255,255,0.08)'
             strokeDasharray='3 3'
-            vertical={true} // garis vertikal
-            horizontal={true} // garis horizontal
+            vertical
+            horizontal
           />
 
           {/* X Axis */}
@@ -59,6 +56,7 @@ export function WrappedMonthlyChart({ data }: MonthlyChartProps) {
             axisLine={{ stroke: "rgba(255,255,255,0.2)" }}
             tickLine={{ stroke: "rgba(255,255,255,0.1)" }}
             width={32}
+            allowDecimals={false}
           />
 
           {/* Tooltip */}
@@ -76,7 +74,7 @@ export function WrappedMonthlyChart({ data }: MonthlyChartProps) {
             cursor={{ stroke: "rgba(255,255,255,0.12)" }}
           />
 
-          {/* Gradient Line */}
+          {/* Gradient */}
           <defs>
             <linearGradient id='lineGradient' x1='0' y1='0' x2='0' y2='1'>
               <stop offset='0%' stopColor='#EC4899' stopOpacity={1} />
@@ -86,7 +84,7 @@ export function WrappedMonthlyChart({ data }: MonthlyChartProps) {
 
           <Line
             type='monotone'
-            dataKey='value'
+            dataKey='count'
             stroke='url(#lineGradient)'
             strokeWidth={3}
             dot={false}

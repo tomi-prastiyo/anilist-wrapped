@@ -86,10 +86,22 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
 
         {/* TOP WIDGET */}
         <WrappedTopWidget
-          totalAnimeWatched={wrappedData.totalAnimeWatched}
-          totalMangaRead={wrappedData.totalMangaRead}
-          animeStats={wrappedData.animeStats}
-          mangaStats={wrappedData.mangaStats}
+          totalAnimeTitles={wrappedData.totalAnimeTitles}
+          totalMangaTitles={wrappedData.totalMangaTitles}
+          animeStats={{
+            totalEpisodes: wrappedData.totalAnimeEpisodes,
+            totalCompleted: wrappedData.totalAnimeCompleted,
+            totalPaused: wrappedData.totalAnimePaused,
+            totalDropped: wrappedData.totalAnimeDropped,
+            meanScore: wrappedData.totalAnimeMeanScore,
+          }}
+          mangaStats={{
+            totalChapters: wrappedData.totalMangaChapters,
+            totalCompleted: wrappedData.totalMangaCompleted,
+            totalPaused: wrappedData.totalMangaPaused,
+            totalDropped: wrappedData.totalMangaDropped,
+            meanScore: wrappedData.totalMangaMeanScore,
+          }}
         />
 
         {/* BOTTOM WIDGET */}
@@ -102,27 +114,33 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
                     {
                       id: "daysActive",
                       label: "Days Active",
-                      value: data.activity.daysActive,
+                      value: wrappedData.daysActive,
                     },
                     {
                       id: "mostActiveMonth",
                       label: "Most Active Day",
-                      value: data.activity.mostActiveMonth,
+                      value: wrappedData.mostActiveDay,
                     },
                     {
                       id: "listActivity",
                       label: "List Activity",
-                      value: data.activity.listActivity,
+                      value: wrappedData.listActivity,
                     },
                     {
-                      id: "statusPost",
-                      label: "Status Post",
-                      value: data.activity.listActivity,
+                      id: "bestBuddy",
+                      label: "Best Buddy",
+                      value: wrappedData.bestBuddy,
                     },
                   ]}
                 />
                 <div className='flex-1'>
-                  <DailyActivityCard activity={wrappedData.dailyActivity} />
+                  <DailyActivityCard
+                    activity={{
+                      episodePerDay: wrappedData.episodePerDay,
+                      chapterPerDay: wrappedData.chapterPerDay,
+                      activityPerDay: wrappedData.activityPerDay,
+                    }}
+                  />
                 </div>
               </div>
 
@@ -135,21 +153,18 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
                 </div>
 
                 <div className='flex-1'>
-                  <WrappedMonthlyChart data={data.anime.monthly} />
+                  <WrappedMonthlyChart data={wrappedData.monthlyActivity} />
                 </div>
               </div>
-              <WrappedTopTagsAndGenres data={wrappedData.topTagsGenres} />
+              <WrappedTopTagsAndGenres
+                tags={wrappedData.topTags}
+                genres={wrappedData.topGenres}
+              />
             </div>
 
             <div className='flex flex-col gap-7.5 w-[476.35px]'>
-              <WrappedTopList
-                title={wrappedData.topAnime.title}
-                items={wrappedData.topAnime.items}
-              />
-              <WrappedTopList
-                title={wrappedData.topManga.title}
-                items={wrappedData.topManga.items}
-              />
+              <WrappedTopList title='Top Anime' items={wrappedData.topAnime} />
+              <WrappedTopList title='Top Manga' items={wrappedData.topManga} />
             </div>
           </div>
         </div>

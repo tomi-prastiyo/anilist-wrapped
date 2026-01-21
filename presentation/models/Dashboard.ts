@@ -4,8 +4,8 @@ import { User } from "./User";
 export interface Dashboard {
   user: User;
 
-  totalAnimeWatched: number;
-  totalMangaRead: number;
+  totalAnimeTitles: number;
+  totalMangaTitles: number;
 
   totalAnimeEpisodes: number;
   totalAnimeCompleted: number;

@@ -1,6 +1,5 @@
 "use client";
 
-import { TopTagsGenres } from "@/presentation/models/TopTagsGenres";
 import {
   Radar,
   RadarChart,
@@ -11,10 +10,20 @@ import {
 } from "recharts";
 
 interface TopTagsAndGenresProps {
-  data: TopTagsGenres;
+  tags: {
+    name: string;
+    count: number;
+  }[];
+  genres: {
+    name: string;
+    count: number;
+  }[];
 }
 
-export function WrappedTopTagsAndGenres({ data }: TopTagsAndGenresProps) {
+export function WrappedTopTagsAndGenres({
+  tags,
+  genres,
+}: TopTagsAndGenresProps) {
   return (
     <div className='flex gap-6 w-full max-w-137.5 h-64'>
       {/* Top Tags */}
@@ -25,13 +34,14 @@ export function WrappedTopTagsAndGenres({ data }: TopTagsAndGenresProps) {
         </div>
 
         <div className='flex gap-2 flex-wrap'>
-          {data.tags.length > 0 ? (
-            data.tags.map((tag) => (
+          {tags.length > 0 ? (
+            tags.map((tag) => (
               <span
-                key={tag.id}
+                key={tag.name}
                 className='px-3 py-1 text-[12px] bg-linear-to-r from-[#0B1622] to-[#121A2B] border border-[#31313B] rounded-lg text-[#CBD5E1] hover:bg-[#0D1B2A] transition'
+                title={`Used ${tag.count} times`}
               >
-                {tag.label}
+                {tag.name}
               </span>
             ))
           ) : (
@@ -50,9 +60,9 @@ export function WrappedTopTagsAndGenres({ data }: TopTagsAndGenresProps) {
         </div>
 
         <div className='flex-1 w-full'>
-          {data.genres.length > 0 ? (
+          {genres.length > 0 ? (
             <ResponsiveContainer width='100%' height='100%'>
-              <RadarChart data={data.genres}>
+              <RadarChart data={genres}>
                 <defs>
                   <linearGradient
                     id='radarGradient'
@@ -65,11 +75,14 @@ export function WrappedTopTagsAndGenres({ data }: TopTagsAndGenresProps) {
                     <stop offset='100%' stopColor='#F472B6' stopOpacity={0.3} />
                   </linearGradient>
                 </defs>
+
                 <PolarGrid stroke='rgba(255,255,255,0.1)' />
+
                 <PolarAngleAxis
                   dataKey='name'
                   tick={{ fill: "#94A3B8", fontSize: 8 }}
                 />
+
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "#0B1120",
@@ -83,8 +96,9 @@ export function WrappedTopTagsAndGenres({ data }: TopTagsAndGenresProps) {
                   itemStyle={{ color: "#EC4899" }}
                   cursor={{ stroke: "rgba(255,255,255,0.12)" }}
                 />
+
                 <Radar
-                  dataKey='value'
+                  dataKey='count'
                   stroke='#EC4899'
                   fill='url(#radarGradient)'
                   fillOpacity={0.6}

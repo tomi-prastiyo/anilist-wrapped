@@ -1,7 +1,9 @@
-import { DailyActivity } from "@/presentation/models/DailyActivity";
-
 interface DailyActivityProps {
-  activity: DailyActivity;
+  activity: {
+    episodePerDay: number;
+    chapterPerDay: number;
+    activityPerDay: number;
+  };
 }
 
 export function DailyActivityCard({ activity }: DailyActivityProps) {

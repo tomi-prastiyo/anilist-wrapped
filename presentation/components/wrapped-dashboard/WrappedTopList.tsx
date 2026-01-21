@@ -3,11 +3,20 @@
 import { TopList } from "@/presentation/models/TopList";
 import { Crown } from "lucide-react";
 
-export function WrappedTopList({ title, items }: TopList) {
+interface WrappedTopListProps {
+  title: string;
+  items: TopList[];
+}
+
+export function WrappedTopList({ title, items }: WrappedTopListProps) {
   if (!items || items.length === 0)
     return <div className='text-xs text-[#64748B]'>No data available</div>;
 
   const [first, ...rest] = items;
+
+  const rank = (item: TopList) => {
+    return items.indexOf(item) + 1;
+  };
 
   return (
     <div className='w-full max-w-119 h-102.5 bg-[#1C1C27] border border-[#31313B] rounded-3xl p-6 flex flex-col gap-2'>
@@ -18,8 +27,8 @@ export function WrappedTopList({ title, items }: TopList) {
           <div className='w-36 shrink-0 relative'>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={first.image}
-              alt={first.title}
+              src={first.media?.coverImage.large}
+              alt={first.media?.title.userPreferred}
               className='w-full h-full object-cover rounded-2xl'
             />
             <div className='absolute top-2 left-2 bg-yellow-400 text-black font-bold w-7 h-7 flex items-center justify-center rounded-lg z-10'>
@@ -39,7 +48,7 @@ export function WrappedTopList({ title, items }: TopList) {
                 </h4>
               </div>
               <h3 className='text-lg md:text-xl font-bold text-white mb-1.5 line-clamp-2'>
-                {first.title}
+                {first.media?.title.userPreferred}
               </h3>
               <span className='inline-block px-2 py-1 bg-[#0B1622] border border-[#31313B] rounded-md text-[12px] text-[#9CA3AF]'>
                 {title}
@@ -54,17 +63,17 @@ export function WrappedTopList({ title, items }: TopList) {
         <div className='grid grid-cols-4 gap-2'>
           {rest.map((item) => (
             <div
-              key={item.rank}
+              key={rank(item)}
               className='relative aspect-2/3 rounded-xl overflow-hidden'
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={item.image}
-                alt={item.title}
+                src={item.media?.coverImage.large}
+                alt={item.media?.title.userPreferred}
                 className='w-full h-full object-cover'
               />
               <div className='absolute top-1 left-1 bg-white text-black text-xs w-5 h-5 flex items-center justify-center rounded-md z-10'>
-                {item.rank}
+                {rank(item)}
               </div>
             </div>
           ))}

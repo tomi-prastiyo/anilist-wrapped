@@ -51,8 +51,6 @@ export class AniListRepositoryImpl implements AniListRepository {
     year: number,
   ): Promise<AniListActivity[]> {
     const { start, end } = getYearRange(year);
-    // console.log("Fetching activities for user", userId);
-    // console.log("Fetching activities from", start, "to", end);
 
     let page = 1;
     let hasNextPage = true;
@@ -69,7 +67,6 @@ export class AniListRepositoryImpl implements AniListRepository {
         createdAtGreater: start,
         createdAtLesser: end,
       });
-      // console.log("Fetched page", data.Page.activities);
 
       const activities = data.Page.activities ?? [];
 
@@ -85,12 +82,9 @@ export class AniListRepositoryImpl implements AniListRepository {
           createdAt: a.createdAt,
         })),
       );
-      // console.log("Fetched activities", results);
 
       hasNextPage = data.Page.pageInfo.hasNextPage;
       page++;
-      // console.log("Has next page", hasNextPage);
-      // console.log("Fetched page", page);
 
       if (hasNextPage) {
         await new Promise((res) => setTimeout(res, 300));
