@@ -1,4 +1,4 @@
-export interface TopList {
+export interface AniListMediaList {
   score?: number;
   media?: {
     id: number;

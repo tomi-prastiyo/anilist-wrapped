@@ -6,13 +6,12 @@ import { WrappedResult } from "@/domain/entities/WrappedResult";
 import { mapWrappedToDashboard } from "@/presentation/mappers/mapWrappedToDashboard";
 import { WrappedExportButton } from "@/presentation/components/wrapped-dashboard/WrappedExportButton";
 import { WrappedHeader } from "@/presentation/components/wrapped-dashboard/WrappedHeader";
-import { WrappedStat } from "@/presentation/components/wrapped-dashboard/WrappedStat";
 import { WrappedActivityStat } from "@/presentation/components/wrapped-dashboard/WrappedActivityStat";
 import { DailyActivityCard } from "@/presentation/components/wrapped-dashboard/WrappedDailyActivity";
 import { WrappedMonthlyChart } from "@/presentation/components/wrapped-dashboard/WrappedMonthlyChart";
 import { WrappedTopTagsAndGenres } from "@/presentation/components/wrapped-dashboard/WrappedTopTagsAndGenres";
 import { WrappedTopList } from "@/presentation/components/wrapped-dashboard/WrappedTopList";
-import { WrappedStatSection } from "../components/wrapped-dashboard/WrappedStatSection";
+import { WrappedTopWidget } from "../components/wrapped-dashboard/WrappedTopWidget";
 
 interface DashboardProps {
   data: WrappedResult;
@@ -86,55 +85,24 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
         <WrappedHeader user={wrappedData.user} year={year} />
 
         {/* TOP WIDGET */}
-        <div className='flex justify-center pt-6'>
-          <div className='flex items-end gap-4.75 w-260 h-64.5'>
-            {/* LEFT */}
-            <div className='flex gap-6.25 w-136.5 h-64.5'>
-              <WrappedStat
-                title='TOTAL ANIME WATCHED'
-                value={data.anime.completed}
-                subtitle='titles'
-                gradient='linear-gradient(135deg, #9810FA 0%, #E60076 100%)'
-              />
-              <WrappedStat
-                title='TOTAL MANGA READ'
-                value={data.manga.completed}
-                subtitle='titles'
-                gradient='linear-gradient(313.56deg, #F54900 2.08%, #D08700 97.82%)'
-              />
-            </div>
-
-            {/* RIGHT */}
-            <div className='flex flex-col gap-6.5 w-118.75 h-59'>
-              <WrappedStatSection
-                title='Anime Stats'
-                accentGradient='linear-gradient(180deg, #C27AFF 0%, #FB64B6 100%)'
-                stats={[
-                  { label: "Episodes", value: data.anime.episodes },
-                  { label: "Completed", value: data.anime.completed },
-                  { label: "Paused", value: data.anime.paused },
-                  { label: "Drop", value: data.anime.dropped },
-                  { label: "Mean Score", value: data.anime.meanScore },
-                ]}
-              />
-
-              <WrappedStatSection
-                title='Manga Stats'
-                accentColor='#FBAB73'
-                titleColor='#FBAB73'
-                bgColor='#2B231D'
-                borderColor='#562C17'
-                stats={[
-                  { label: "Chapters", value: data.manga.episodes },
-                  { label: "Completed", value: data.manga.completed },
-                  { label: "Paused", value: data.manga.paused },
-                  { label: "Drop", value: data.manga.dropped },
-                  { label: "Mean Score", value: data.manga.meanScore },
-                ]}
-              />
-            </div>
-          </div>
-        </div>
+        <WrappedTopWidget
+          totalAnimeTitles={wrappedData.totalAnimeTitles}
+          totalMangaTitles={wrappedData.totalMangaTitles}
+          animeStats={{
+            totalEpisodes: wrappedData.totalAnimeEpisodes,
+            totalCompleted: wrappedData.totalAnimeCompleted,
+            totalPaused: wrappedData.totalAnimePaused,
+            totalDropped: wrappedData.totalAnimeDropped,
+            meanScore: wrappedData.totalAnimeMeanScore,
+          }}
+          mangaStats={{
+            totalChapters: wrappedData.totalMangaChapters,
+            totalCompleted: wrappedData.totalMangaCompleted,
+            totalPaused: wrappedData.totalMangaPaused,
+            totalDropped: wrappedData.totalMangaDropped,
+            meanScore: wrappedData.totalMangaMeanScore,
+          }}
+        />
 
         {/* BOTTOM WIDGET */}
         <div className='flex justify-center pt-6'>
@@ -146,27 +114,33 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
                     {
                       id: "daysActive",
                       label: "Days Active",
-                      value: data.activity.daysActive,
+                      value: wrappedData.daysActive,
                     },
                     {
                       id: "mostActiveMonth",
                       label: "Most Active Day",
-                      value: data.activity.mostActiveMonth,
+                      value: wrappedData.mostActiveDay,
                     },
                     {
                       id: "listActivity",
                       label: "List Activity",
-                      value: data.activity.listActivity,
+                      value: wrappedData.listActivity,
                     },
                     {
-                      id: "statusPost",
-                      label: "Status Post",
-                      value: data.activity.listActivity,
+                      id: "bestBuddy",
+                      label: "Best Buddy",
+                      value: wrappedData.bestBuddy,
                     },
                   ]}
                 />
                 <div className='flex-1'>
-                  <DailyActivityCard activity={wrappedData.dailyActivity} />
+                  <DailyActivityCard
+                    activity={{
+                      episodePerDay: wrappedData.episodePerDay,
+                      chapterPerDay: wrappedData.chapterPerDay,
+                      activityPerDay: wrappedData.activityPerDay,
+                    }}
+                  />
                 </div>
               </div>
 
@@ -179,21 +153,18 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
                 </div>
 
                 <div className='flex-1'>
-                  <WrappedMonthlyChart data={data.anime.monthly} />
+                  <WrappedMonthlyChart data={wrappedData.monthlyActivity} />
                 </div>
               </div>
-              <WrappedTopTagsAndGenres data={wrappedData.topTagsGenres} />
+              <WrappedTopTagsAndGenres
+                tags={wrappedData.topTags}
+                genres={wrappedData.topGenres}
+              />
             </div>
 
             <div className='flex flex-col gap-7.5 w-[476.35px]'>
-              <WrappedTopList
-                title={wrappedData.topAnime.title}
-                items={wrappedData.topAnime.items}
-              />
-              <WrappedTopList
-                title={wrappedData.topManga.title}
-                items={wrappedData.topManga.items}
-              />
+              <WrappedTopList title='Top Anime' items={wrappedData.topAnime} />
+              <WrappedTopList title='Top Manga' items={wrappedData.topManga} />
             </div>
           </div>
         </div>

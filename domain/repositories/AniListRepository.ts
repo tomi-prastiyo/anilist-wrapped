@@ -1,6 +1,8 @@
-import { AniListEntry } from "../entities/AniListEntry";
+import { AniListActivity } from "../entities/AniListActivity";
+import { AniListMediaList } from "../entities/AniListMediaList";
 
 export interface AniListUser {
+  id: number;
   name: string;
   avatar: string;
   banner: string | null;
@@ -10,7 +12,21 @@ export interface AniListUser {
 export interface AniListRepository {
   getUser(username: string): Promise<AniListUser>;
 
-  getAnimeEntries(username: string): Promise<AniListEntry[]>;
+  getActivitiesByYear(userId: number, year: number): Promise<AniListActivity[]>;
 
-  getMangaEntries(username: string): Promise<AniListEntry[]>;
+  getMeanScoreAndTopAnimeByAnimeOrMangaIds(
+    userId: number,
+    mediaIds: number[],
+  ): Promise<{
+    meanScore: number;
+    topAnime: AniListMediaList[];
+  }>;
+
+  getTopTagsAndTopGenresByAnimeAndMangaIds(
+    userId: number,
+    mediaIds: number[],
+  ): Promise<{
+    topTags: { name: string; count: number }[];
+    topGenres: { name: string; count: number }[];
+  }>;
 }

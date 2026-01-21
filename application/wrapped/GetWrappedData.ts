@@ -1,49 +1,31 @@
 import { AniListRepository } from "@/domain/repositories/AniListRepository";
 import { WrappedResult } from "@/domain/entities/WrappedResult";
-import { calculateStats } from "./CalculateStats";
-import { getInsights } from "./GetInsights";
-import { getPercentile } from "./GetPercentile";
-import { getMostActiveMonth } from "./GetMostActiveMonth";
+import { animeAndMangaStats } from "./GetAnimeAndMangaStats";
 
 export async function getWrappedData(
   repo: AniListRepository,
   username: string,
-  year: number
+  year: number,
 ): Promise<WrappedResult> {
   // ================= FETCH =================
   const user = await repo.getUser(username);
-  const animeEntries = await repo.getAnimeEntries(username);
-  const mangaEntries = await repo.getMangaEntries(username);
-
-  // ================= STATS =================
-  const animeStats = calculateStats(animeEntries, year);
-  const mangaStats = calculateStats(mangaEntries, year);
-
-  // ================= DERIVED =================
-  const insight = getInsights(animeStats);
-  const percentile = {
-    anime: getPercentile(animeStats),
-    overall: getPercentile(animeStats),
-  };
-
-  const mostActiveMonth = getMostActiveMonth(animeStats.monthly);
-
-  // ================= TOP ANIME & MANGA =================
-  const topAnime = [...animeEntries]
-    .filter(
-      (e) =>
-        e.status === "COMPLETED" && e.completedAt?.year === year && e.score > 0
-    )
-    .sort((a, b) => (b.score || 0) - (a.score || 0))
-    .slice(0, 5);
-
-  const topManga = [...mangaEntries]
-    .filter(
-      (e) =>
-        e.status === "COMPLETED" && e.completedAt?.year === year && e.score > 0
-    )
-    .sort((a, b) => (b.score || 0) - (a.score || 0))
-    .slice(0, 5);
+  const activities = await repo.getActivitiesByYear(user.id, year);
+  const stats = animeAndMangaStats(activities, year);
+  const animeMeanScore = await repo.getMeanScoreAndTopAnimeByAnimeOrMangaIds(
+    user.id,
+    stats.animeIds,
+  );
+  stats.totalAnimeMeanScore = animeMeanScore.meanScore;
+  const mangaMeanScore = await repo.getMeanScoreAndTopAnimeByAnimeOrMangaIds(
+    user.id,
+    stats.mangaIds,
+  );
+  stats.totalMangaMeanScore = mangaMeanScore.meanScore;
+  const topTagsAndTopGenres =
+    await repo.getTopTagsAndTopGenresByAnimeAndMangaIds(
+      user.id,
+      stats.animeAndMangaIds,
+    );
 
   // ================= FINAL =================
   return {
@@ -56,26 +38,36 @@ export async function getWrappedData(
         : "-",
     },
 
-    anime: animeStats,
-    manga: mangaStats,
+    totalAnimeTitles: stats.totalAnimeTitles,
+    totalMangaTitles: stats.totalMangaTitles,
 
-    activity: {
-      daysActive: animeStats.daysActive + "/365",
-      mostActiveMonth,
-      dailyEpisodes: animeStats.episodesPerDay,
-      listActivity: animeStats.completed,
-    },
+    totalAnimeEpisodes: stats.totalAnimeEpisodes,
+    totalAnimeCompleted: stats.totalAnimeCompleted,
+    totalAnimePaused: stats.totalAnimePaused,
+    totalAnimeDropped: stats.totalAnimeDropped,
+    totalAnimeMeanScore: stats.totalAnimeMeanScore,
 
-    monthly: animeStats.monthly,
-    topGenres: animeStats.topGenres,
-    topTags: animeStats.topTags,
+    totalMangaChapters: stats.totalMangaChapters,
+    totalMangaCompleted: stats.totalMangaCompleted,
+    totalMangaPaused: stats.totalMangaPaused,
+    totalMangaDropped: stats.totalMangaDropped,
+    totalMangaMeanScore: stats.totalMangaMeanScore,
 
-    topAnime,
-    topManga,
-    firstAnime: animeStats.firstEntry,
-    lastAnime: animeStats.lastEntry,
+    daysActive: stats.daysActive,
+    mostActiveDay: stats.mostActiveDay,
+    listActivity: stats.listActivity,
+    bestBuddy: stats.bestBuddy,
 
-    percentile,
-    insight,
+    episodePerDay: stats.episodePerDay,
+    chapterPerDay: stats.chapterPerDay,
+    activityPerDay: stats.activityPerDay,
+
+    monthlyActivity: stats.monthlyActivity,
+
+    topGenres: topTagsAndTopGenres.topGenres,
+    topTags: topTagsAndTopGenres.topTags,
+
+    topAnime: animeMeanScore.topAnime,
+    topManga: mangaMeanScore.topAnime,
   };
 }

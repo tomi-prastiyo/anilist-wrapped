@@ -1,29 +1,34 @@
-import { AniListEntry } from "./AniListEntry";
-
 export interface AniListStats {
-  entries: AniListEntry[];
+  totalAnimeTitles: number;
+  totalMangaTitles: number;
 
-  episodes: number;
-  completed: number;
-  paused: number;
-  dropped: number;
+  totalAnimeEpisodes: number;
+  totalAnimeCompleted: number;
+  totalAnimePaused: number;
+  totalAnimeDropped: number;
+  totalAnimeMeanScore: number;
 
-  meanScore: number;
+  totalMangaChapters: number;
+  totalMangaCompleted: number;
+  totalMangaPaused: number;
+  totalMangaDropped: number;
+  totalMangaMeanScore: number;
 
-  monthly: number[];
-  daysActive: number;
-  episodesPerDay: number;
+  animeIds: number[];
+  mangaIds: number[];
+  animeAndMangaIds: number[];
 
-  topGenres: {
-    name: string;
-    value: number;
+  daysActive: string;
+  mostActiveDay: string;
+  listActivity: number;
+  bestBuddy: string;
+
+  episodePerDay: number;
+  chapterPerDay: number;
+  activityPerDay: number;
+
+  monthlyActivity: {
+    month: string;
+    count: number;
   }[];
-
-  topTags: {
-    name: string;
-    value: number;
-  }[];
-
-  firstEntry: AniListEntry | null;
-  lastEntry: AniListEntry | null;
 }

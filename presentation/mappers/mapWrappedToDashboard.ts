@@ -1,9 +1,5 @@
 import { WrappedResult } from "@/domain/entities/WrappedResult";
 import { Dashboard } from "../models/Dashboard";
-import { mapAnimeStats } from "./mapStats";
-import { mapDailyActivity } from "./mapDailyActivity";
-import { mapTopList } from "./mapTopList";
-import { mapTopTagsGenres } from "./mapTopTagsGenres";
 
 export function mapWrappedToDashboard(result: WrappedResult): Dashboard {
   return {
@@ -14,15 +10,36 @@ export function mapWrappedToDashboard(result: WrappedResult): Dashboard {
       memberSince: String(result.user.memberSince),
     },
 
-    dailyActivity: mapDailyActivity(result),
-    monthly: result.anime.monthly,
+    totalAnimeTitles: result.totalAnimeTitles,
+    totalMangaTitles: result.totalMangaTitles,
 
-    animeStats: mapAnimeStats(result.anime),
-    mangaStats: mapAnimeStats(result.manga),
+    totalAnimeEpisodes: result.totalAnimeEpisodes,
+    totalAnimeCompleted: result.totalAnimeCompleted,
+    totalAnimePaused: result.totalAnimePaused,
+    totalAnimeDropped: result.totalAnimeDropped,
+    totalAnimeMeanScore: result.totalAnimeMeanScore,
 
-    topAnime: mapTopList("Top Anime", result.topAnime),
-    topManga: mapTopList("Top Manga", result.topManga),
+    totalMangaChapters: result.totalMangaChapters,
+    totalMangaCompleted: result.totalMangaCompleted,
+    totalMangaPaused: result.totalMangaPaused,
+    totalMangaDropped: result.totalMangaDropped,
+    totalMangaMeanScore: result.totalMangaMeanScore,
 
-    topTagsGenres: mapTopTagsGenres(result),
+    daysActive: result.daysActive,
+    mostActiveDay: result.mostActiveDay,
+    listActivity: result.listActivity,
+    bestBuddy: result.bestBuddy,
+
+    episodePerDay: result.episodePerDay,
+    chapterPerDay: result.chapterPerDay,
+    activityPerDay: result.activityPerDay,
+
+    monthlyActivity: result.monthlyActivity,
+
+    topGenres: result.topGenres,
+    topTags: result.topTags,
+
+    topAnime: result.topAnime,
+    topManga: result.topManga,
   };
 }

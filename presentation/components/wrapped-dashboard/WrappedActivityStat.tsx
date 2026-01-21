@@ -1,7 +1,9 @@
-import { Stat } from "@/presentation/models/Stat";
-
 interface ActivityStatsProps {
-  stats: Stat[];
+  stats: {
+    id: string;
+    label: string;
+    value: string | number;
+  }[];
 }
 
 export function WrappedActivityStat({ stats }: ActivityStatsProps) {

@@ -5,13 +5,6 @@ interface SmallStatProps {
   borderColor?: string;
 }
 
-interface SmallStatProps {
-  label: string;
-  value: number | string;
-  bgColor?: string;
-  borderColor?: string;
-}
-
 export const WrappedSmallStat = ({
   label,
   value,

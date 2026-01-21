@@ -14,13 +14,14 @@ import {
   Box,
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
+import { WrappedResult } from "@/domain/entities/WrappedResult";
 
 export default function Home() {
   const currentYear = new Date().getFullYear();
   const [username, setUsername] = useState("PdBear");
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [displayYear, setDisplayYear] = useState(currentYear);
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<WrappedResult>();
   const [loading, setLoading] = useState(false);
 
   const years = [];
@@ -34,7 +35,7 @@ export default function Home() {
       const d = await getWrappedData(repo, username, selectedYear);
       setData(d);
       setDisplayYear(selectedYear);
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
       alert("Failed to fetch AniList data. Make sure the username is correct.");
     } finally {
@@ -59,7 +60,7 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box className='relative min-h-screen flex flex-col items-center p-10 bg-gradient-to-b from-[#0B0B15] to-[#1C1C27]'>
+      <Box className='relative min-h-screen flex flex-col items-center p-10 bg-linear-to-b from-[#0B0B15] to-[#1C1C27]'>
         {/* Input & Year Select */}
         <Box className='w-full max-w-md mb-5 space-y-6 z-10'>
           <TextField
