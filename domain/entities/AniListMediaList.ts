@@ -17,4 +17,5 @@ export interface AniListMediaList {
       year: number;
     };
   };
+  status?: string;
 }

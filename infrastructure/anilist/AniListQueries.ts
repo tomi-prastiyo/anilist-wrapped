@@ -85,6 +85,7 @@ query ($page: Int, $mediaIdIn: [Int], $userId: Int) {
           year
         }
       }
+      status
     }
   }
 }

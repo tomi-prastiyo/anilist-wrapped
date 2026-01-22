@@ -26,6 +26,7 @@ export interface AniListMediaListResponse {
           year: number;
         };
       };
+      status?: string;
     }[];
   };
 }

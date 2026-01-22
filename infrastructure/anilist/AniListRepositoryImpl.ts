@@ -125,7 +125,12 @@ export class AniListRepositoryImpl implements AniListRepository {
           scores.push(item.score);
         }
 
-        if (item.media) {
+        if (
+          item.media &&
+          (item.status === "CURRENT" ||
+            item.status === "COMPLETED" ||
+            item.status === "REPEATING")
+        ) {
           mediaMap.set(item.media.id, {
             score: item.score,
             media: item.media,

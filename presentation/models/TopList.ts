@@ -17,4 +17,5 @@ export interface TopList {
       year: number;
     };
   };
+  status?: string;
 }
