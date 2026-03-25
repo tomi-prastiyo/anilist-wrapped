@@ -1,21 +1,10 @@
 import { WrappedSmallStat } from "./WrappedSmallStat";
+import type { MediaStats } from "@/presentation/models/Dashboard";
 
 interface StatSectionProps {
   title: string;
-  animeStats?: {
-    totalEpisodes: number;
-    totalCompleted: number;
-    totalPaused: number;
-    totalDropped: number;
-    meanScore: number;
-  };
-  mangaStats?: {
-    totalChapters: number;
-    totalCompleted: number;
-    totalPaused: number;
-    totalDropped: number;
-    meanScore: number;
-  };
+  type: "anime" | "manga";
+  stats: MediaStats;
   accentGradient?: string;
   accentColor?: string;
   bgColor?: string;
@@ -25,48 +14,36 @@ interface StatSectionProps {
 
 export const WrappedStatSection = ({
   title,
-  animeStats,
-  mangaStats,
+  type,
+  stats,
   accentGradient,
   accentColor,
   bgColor,
   borderColor,
-  titleColor = "#DAB2FF",
+  titleColor = "var(--purple-light)",
 }: StatSectionProps) => {
-  let stats: { label: string; value: string | number }[] = [];
-
-  switch (true) {
-    case animeStats !== undefined:
-      stats = [
-        {
-          label: "Episodes",
-          value: animeStats?.totalEpisodes.toLocaleString(),
-        },
-        {
-          label: "Completed",
-          value: animeStats?.totalCompleted.toLocaleString(),
-        },
-        { label: "Paused", value: animeStats?.totalPaused.toLocaleString() },
-        { label: "Dropped", value: animeStats?.totalDropped.toLocaleString() },
-        { label: "Mean Score", value: animeStats?.meanScore.toFixed(1) },
-      ];
-      break;
-    case mangaStats !== undefined:
-      stats = [
-        {
-          label: "Chapters",
-          value: mangaStats?.totalChapters.toLocaleString(),
-        },
-        {
-          label: "Completed",
-          value: mangaStats?.totalCompleted.toLocaleString(),
-        },
-        { label: "Paused", value: mangaStats?.totalPaused.toLocaleString() },
-        { label: "Dropped", value: mangaStats?.totalDropped.toLocaleString() },
-        { label: "Mean Score", value: mangaStats?.meanScore.toFixed(1) },
-      ];
-      break;
-  }
+  const items =
+    type === "anime"
+      ? [
+          {
+            label: "Episodes",
+            value: (stats.totalEpisodes ?? 0).toLocaleString(),
+          },
+          { label: "Completed", value: stats.totalCompleted.toLocaleString() },
+          { label: "Paused", value: stats.totalPaused.toLocaleString() },
+          { label: "Dropped", value: stats.totalDropped.toLocaleString() },
+          { label: "Mean Score", value: stats.meanScore.toFixed(1) },
+        ]
+      : [
+          {
+            label: "Chapters",
+            value: (stats.totalChapters ?? 0).toLocaleString(),
+          },
+          { label: "Completed", value: stats.totalCompleted.toLocaleString() },
+          { label: "Paused", value: stats.totalPaused.toLocaleString() },
+          { label: "Dropped", value: stats.totalDropped.toLocaleString() },
+          { label: "Mean Score", value: stats.meanScore.toFixed(1) },
+        ];
 
   return (
     <div className='flex flex-col gap-4 w-118.75 h-26.25 flex-none'>
@@ -86,7 +63,7 @@ export const WrappedStatSection = ({
 
       {/* STATS ROW */}
       <div className='flex gap-2.5 w-full h-18.25'>
-        {stats.map((stat, i) => (
+        {items.map((stat, i) => (
           <WrappedSmallStat
             key={i}
             label={stat.label}

@@ -1,5 +1,7 @@
+export type ActivityType = "ANIME_LIST" | "MANGA_LIST";
+
 export interface AniListActivity {
-  type?: string;
+  type?: ActivityType | string;
   status?: string;
   progress?: string;
   media?: {

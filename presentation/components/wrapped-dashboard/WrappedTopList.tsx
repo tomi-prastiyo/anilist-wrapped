@@ -1,6 +1,7 @@
 "use client";
 
 import { TopList } from "@/presentation/models/TopList";
+import { CardBox } from "@/presentation/components/ui/CardBox";
 import { Crown } from "lucide-react";
 
 interface WrappedTopListProps {
@@ -10,15 +11,14 @@ interface WrappedTopListProps {
 
 export function WrappedTopList({ title, items }: WrappedTopListProps) {
   if (!items || items.length === 0)
-    return <div className='text-xs text-[#64748B]'>No data available</div>;
+    return <div className='text-xs text-text-faint'>No data available</div>;
 
   const [first, ...rest] = items;
 
   return (
-    <div className='w-full max-w-119 h-102.5 bg-[#1C1C27] border border-[#31313B] rounded-3xl p-6 flex flex-col gap-2'>
+    <CardBox className='w-full max-w-119 h-102.5 p-6 flex flex-col gap-2'>
       {/* Top Row: Big Poster + Right Content */}
       <div className='flex gap-4 flex-1'>
-        {/* Big Poster */}
         {first && (
           <div className='w-36 shrink-0 relative overflow-hidden rounded-2xl'>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -27,34 +27,33 @@ export function WrappedTopList({ title, items }: WrappedTopListProps) {
               alt={first.media?.title.userPreferred}
               className='w-full h-full object-cover'
             />
-            <div className='absolute top-0 left-0 bg-[#EAB308] text-black font-extrabold w-9 h-9 flex items-center justify-center text-lg rounded-br-2xl'>
+            <div className='absolute top-0 left-0 bg-gold text-black font-extrabold w-9 h-9 flex items-center justify-center text-lg rounded-br-2xl'>
               1
             </div>
           </div>
         )}
 
-        {/* Right Content */}
         {first && (
           <div className='flex-1 flex flex-col justify-center items-start pl-2'>
             <div>
               <div className='flex items-center gap-2.5 mb-4'>
                 <Crown className='w-5 h-5 text-yellow-400 fill-yellow-400' />
-                <h4 className='text-sm font-bold text-white uppercase'>
+                <h4 className='text-sm font-bold text-text-primary uppercase'>
                   {title}
                 </h4>
               </div>
 
-              <h3 className='text-xl font-bold text-white leading-snug max-w-65'>
+              <h3 className='text-xl font-bold text-text-primary leading-snug max-w-65'>
                 {first.media?.title.userPreferred}
               </h3>
               {first.media?.startDate.year && (
-                <span className='text-sm text-[#CBD5E1]'>
+                <span className='text-sm text-text-subtle'>
                   {first.media?.startDate.year}
                 </span>
               )}
               <div className='flex items-center gap-3 mt-2'>
                 {first.media?.format && (
-                  <span className='text-sm text-[#CBD5E1]'>
+                  <span className='text-sm text-text-subtle'>
                     {first.media.format}
                   </span>
                 )}
@@ -85,6 +84,6 @@ export function WrappedTopList({ title, items }: WrappedTopListProps) {
           ))}
         </div>
       )}
-    </div>
+    </CardBox>
   );
 }

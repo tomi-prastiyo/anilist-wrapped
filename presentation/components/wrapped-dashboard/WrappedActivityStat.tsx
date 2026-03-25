@@ -12,12 +12,14 @@ export function WrappedActivityStat({ stats }: ActivityStatsProps) {
       {stats.map((stat) => (
         <div
           key={stat.id}
-          className='flex items-center justify-between px-5.75 h-[56.6px] bg-[#1C1C27] border border-[#31313B] rounded-xl'
+          className='flex items-center justify-between px-5.75 h-[56.6px] bg-card border border-card-border rounded-xl'
         >
-          <span className='text-[14px] font-semibold text-[#9CA3AF]'>
+          <span className='text-[14px] font-semibold text-text-muted'>
             {stat.label}
           </span>
-          <span className='text-[16px] font-bold text-white'>{stat.value}</span>
+          <span className='text-[16px] font-bold text-text-primary'>
+            {stat.value}
+          </span>
         </div>
       ))}
     </div>

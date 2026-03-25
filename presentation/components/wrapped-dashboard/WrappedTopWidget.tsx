@@ -1,23 +1,12 @@
 import { WrappedStat } from "./WrappedStat";
 import { WrappedStatSection } from "./WrappedStatSection";
+import type { MediaStats } from "@/presentation/models/Dashboard";
 
 interface TopWidgetProps {
   totalAnimeTitles: number;
   totalMangaTitles: number;
-  animeStats: {
-    totalEpisodes: number;
-    totalCompleted: number;
-    totalPaused: number;
-    totalDropped: number;
-    meanScore: number;
-  };
-  mangaStats: {
-    totalChapters: number;
-    totalCompleted: number;
-    totalPaused: number;
-    totalDropped: number;
-    meanScore: number;
-  };
+  animeStats: MediaStats;
+  mangaStats: MediaStats;
 }
 
 export const WrappedTopWidget = ({
@@ -49,17 +38,19 @@ export const WrappedTopWidget = ({
         <div className='flex flex-col gap-6.5 w-118.75 h-59'>
           <WrappedStatSection
             title='Anime Stats'
+            type='anime'
             accentGradient='linear-gradient(180deg, #C27AFF 0%, #FB64B6 100%)'
-            animeStats={animeStats}
+            stats={animeStats}
           />
 
           <WrappedStatSection
             title='Manga Stats'
-            accentColor='#FBAB73'
-            titleColor='#FBAB73'
-            bgColor='#2B231D'
-            borderColor='#562C17'
-            mangaStats={mangaStats}
+            type='manga'
+            accentColor='var(--orange-accent)'
+            titleColor='var(--orange-accent)'
+            bgColor='var(--orange-bg)'
+            borderColor='var(--orange-border)'
+            stats={mangaStats}
           />
         </div>
       </div>

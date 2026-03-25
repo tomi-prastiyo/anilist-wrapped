@@ -4,22 +4,69 @@
    THEME TOKENS (TAILWIND v4)
 ====================== */
 :root {
-  --background: #020617; /* slate-950 */
-  --foreground: #e5e7eb; /* slate-200 */
+  --background: #020617;
+  --foreground: #e5e7eb;
 
-  --card: #121a2a;
-  --card-border: rgba(255, 255, 255, 0.08);
+  --card: #1c1c27;
+  --card-border: #31313b;
 
-  --accent: #f472b6; /* pink-400 */
+  --accent: #ec4899;
+  --accent-light: #f472b6;
+
+  --purple-light: #dab2ff;
+  --purple-accent: #e7d3eb;
+  --purple-muted: #b7a5bb;
+  --purple-bg: #271932;
+  --purple-border: #40225c;
+
+  --orange-accent: #fbab73;
+  --orange-bg: #2b231d;
+  --orange-border: #562c17;
+
+  --text-primary: #ffffff;
+  --text-secondary: #e5e7eb;
+  --text-muted: #9ca3af;
+  --text-subtle: #cbd5e1;
+  --text-dim: #94a3b8;
+  --text-faint: #64748b;
+
+  --dashboard-from: #0b1220;
+  --dashboard-via: #0e1628;
+  --dashboard-to: #0b1220;
+  --dashboard-deep: #0b1622;
+  --dashboard-surface: #0b1120;
+
+  --gold: #eab308;
 }
 
-/* Expose to Tailwind */
+/* Expose to Tailwind v4 */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-border: var(--card-border);
   --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-purple-light: var(--purple-light);
+  --color-purple-accent: var(--purple-accent);
+  --color-purple-muted: var(--purple-muted);
+  --color-purple-bg: var(--purple-bg);
+  --color-purple-border: var(--purple-border);
+  --color-orange-accent: var(--orange-accent);
+  --color-orange-bg: var(--orange-bg);
+  --color-orange-border: var(--orange-border);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-text-dim: var(--text-dim);
+  --color-text-faint: var(--text-faint);
+  --color-dashboard-from: var(--dashboard-from);
+  --color-dashboard-via: var(--dashboard-via);
+  --color-dashboard-to: var(--dashboard-to);
+  --color-dashboard-deep: var(--dashboard-deep);
+  --color-dashboard-surface: var(--dashboard-surface);
+  --color-gold: var(--gold);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -36,13 +83,11 @@ body {
   color: var(--foreground);
 }
 
-/* Font smoothing */
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Prevent horizontal scroll (export-safe) */
 body {
   overflow-x: hidden;
 }
@@ -56,7 +101,16 @@ img {
 }
 
 /* ======================
-   SCROLLBAR (OPTIONAL, SAFE)
+   UTILITIES
+====================== */
+.gradient-text {
+  background: linear-gradient(to right, #3db4f2, #c063ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ======================
+   SCROLLBAR
 ====================== */
 ::-webkit-scrollbar {
   width: 6px;

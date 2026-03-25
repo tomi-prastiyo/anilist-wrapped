@@ -2,44 +2,70 @@ import { WrappedResult } from "@/domain/entities/WrappedResult";
 import { Dashboard } from "../models/Dashboard";
 
 export function mapWrappedToDashboard(result: WrappedResult): Dashboard {
+  const { user, stats } = result;
+
+  const memberYear = user.memberSince
+    ? new Date(user.memberSince * 1000).getFullYear()
+    : "-";
+
   return {
     user: {
-      name: result.user.name,
-      avatar: result.user.avatar,
-      banner: result.user.banner,
-      memberSince: String(result.user.memberSince),
+      name: user.name,
+      avatar: user.avatar,
+      banner: user.banner,
+      memberSince: String(memberYear),
     },
 
-    totalAnimeTitles: result.totalAnimeTitles,
-    totalMangaTitles: result.totalMangaTitles,
+    anime: {
+      totalTitles: stats.totalAnimeTitles,
+      stats: {
+        totalEpisodes: stats.totalAnimeEpisodes,
+        totalCompleted: stats.totalAnimeCompleted,
+        totalPaused: stats.totalAnimePaused,
+        totalDropped: stats.totalAnimeDropped,
+        meanScore: stats.totalAnimeMeanScore,
+      },
+      topList: result.topAnime,
+    },
 
-    totalAnimeEpisodes: result.totalAnimeEpisodes,
-    totalAnimeCompleted: result.totalAnimeCompleted,
-    totalAnimePaused: result.totalAnimePaused,
-    totalAnimeDropped: result.totalAnimeDropped,
-    totalAnimeMeanScore: result.totalAnimeMeanScore,
+    manga: {
+      totalTitles: stats.totalMangaTitles,
+      stats: {
+        totalChapters: stats.totalMangaChapters,
+        totalCompleted: stats.totalMangaCompleted,
+        totalPaused: stats.totalMangaPaused,
+        totalDropped: stats.totalMangaDropped,
+        meanScore: stats.totalMangaMeanScore,
+      },
+      topList: result.topManga,
+    },
 
-    totalMangaChapters: result.totalMangaChapters,
-    totalMangaCompleted: result.totalMangaCompleted,
-    totalMangaPaused: result.totalMangaPaused,
-    totalMangaDropped: result.totalMangaDropped,
-    totalMangaMeanScore: result.totalMangaMeanScore,
+    activity: {
+      stats: [
+        { id: "daysActive", label: "Days Active", value: stats.daysActive },
+        {
+          id: "mostActiveDay",
+          label: "Most Active Day",
+          value: stats.mostActiveDay,
+        },
+        {
+          id: "listActivity",
+          label: "List Activity",
+          value: stats.listActivity,
+        },
+        { id: "bestBuddy", label: "Best Buddy", value: stats.bestBuddy },
+      ],
+      daily: {
+        episodePerDay: stats.episodePerDay,
+        chapterPerDay: stats.chapterPerDay,
+        activityPerDay: stats.activityPerDay,
+      },
+      monthly: stats.monthlyActivity,
+    },
 
-    daysActive: result.daysActive,
-    mostActiveDay: result.mostActiveDay,
-    listActivity: result.listActivity,
-    bestBuddy: result.bestBuddy,
-
-    episodePerDay: result.episodePerDay,
-    chapterPerDay: result.chapterPerDay,
-    activityPerDay: result.activityPerDay,
-
-    monthlyActivity: result.monthlyActivity,
-
-    topGenres: result.topGenres,
-    topTags: result.topTags,
-
-    topAnime: result.topAnime,
-    topManga: result.topManga,
+    discovery: {
+      topTags: result.topTags,
+      topGenres: result.topGenres,
+    },
   };
 }

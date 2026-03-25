@@ -7,11 +7,13 @@ import { mapWrappedToDashboard } from "@/presentation/mappers/mapWrappedToDashbo
 import { WrappedExportButton } from "@/presentation/components/wrapped-dashboard/WrappedExportButton";
 import { WrappedHeader } from "@/presentation/components/wrapped-dashboard/WrappedHeader";
 import { WrappedActivityStat } from "@/presentation/components/wrapped-dashboard/WrappedActivityStat";
-import { DailyActivityCard } from "@/presentation/components/wrapped-dashboard/WrappedDailyActivity";
+import { WrappedDailyActivity } from "@/presentation/components/wrapped-dashboard/WrappedDailyActivity";
 import { WrappedMonthlyChart } from "@/presentation/components/wrapped-dashboard/WrappedMonthlyChart";
 import { WrappedTopTagsAndGenres } from "@/presentation/components/wrapped-dashboard/WrappedTopTagsAndGenres";
 import { WrappedTopList } from "@/presentation/components/wrapped-dashboard/WrappedTopList";
 import { WrappedTopWidget } from "../components/wrapped-dashboard/WrappedTopWidget";
+import { CardBox } from "@/presentation/components/ui/CardBox";
+import { SectionHeader } from "@/presentation/components/ui/SectionHeader";
 
 interface DashboardProps {
   data: WrappedResult;
@@ -27,7 +29,7 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
       const url = await toPng(ref.current, {
         pixelRatio: 2,
         cacheBust: true,
-        backgroundColor: "#0b1220", // agar gradient/tampilan tidak hilang
+        backgroundColor: "#0b1220",
       });
 
       const a = document.createElement("a");
@@ -39,40 +41,10 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
     }
   };
 
-  const wrappedData = mapWrappedToDashboard(data);
+  const dashboard = mapWrappedToDashboard(data);
 
   return (
     <div className='space-y-4'>
-      <style>
-        {`
-          body {
-            font-family: "Overpass", sans-serif;
-            background-color: #0b1622;
-            color: #edf1f5;
-            min-height: 100vh;
-          }
-
-          .card-bg {
-            background-color: #151f2e;
-          }
-
-          .gradient-text {
-            background: linear-gradient(to right, #3db4f2, #c063ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-          }
-          ::-webkit-scrollbar {
-            width: 8px;
-          }
-          ::-webkit-scrollbar-track {
-            background: #0b1622;
-          }
-          ::-webkit-scrollbar-thumb {
-            background: #3db4f2;
-            border-radius: 4px;
-          }
-        `}
-      </style>
       {/* EXPORT BUTTON */}
       <WrappedExportButton onClick={exportImage} />
 
@@ -82,26 +54,14 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
         className='relative w-full max-w-300 aspect-4/3 rounded-3xl p-6 bg-linear-to-br from-[#0b1220] via-[#0e1628] to-[#0b1220]'
       >
         {/* HEADER */}
-        <WrappedHeader user={wrappedData.user} year={year} />
+        <WrappedHeader user={dashboard.user} year={year} />
 
         {/* TOP WIDGET */}
         <WrappedTopWidget
-          totalAnimeTitles={wrappedData.totalAnimeTitles}
-          totalMangaTitles={wrappedData.totalMangaTitles}
-          animeStats={{
-            totalEpisodes: wrappedData.totalAnimeEpisodes,
-            totalCompleted: wrappedData.totalAnimeCompleted,
-            totalPaused: wrappedData.totalAnimePaused,
-            totalDropped: wrappedData.totalAnimeDropped,
-            meanScore: wrappedData.totalAnimeMeanScore,
-          }}
-          mangaStats={{
-            totalChapters: wrappedData.totalMangaChapters,
-            totalCompleted: wrappedData.totalMangaCompleted,
-            totalPaused: wrappedData.totalMangaPaused,
-            totalDropped: wrappedData.totalMangaDropped,
-            meanScore: wrappedData.totalMangaMeanScore,
-          }}
+          totalAnimeTitles={dashboard.anime.totalTitles}
+          totalMangaTitles={dashboard.manga.totalTitles}
+          animeStats={dashboard.anime.stats}
+          mangaStats={dashboard.manga.stats}
         />
 
         {/* BOTTOM WIDGET */}
@@ -109,62 +69,33 @@ export function WrappedDashboard({ data, year }: DashboardProps) {
           <div className='flex items-end gap-6.25'>
             <div className='flex flex-col gap-7.5 w-[540.83px]'>
               <div className='flex flex-row gap-[25.33px] w-full h-[268.39px]'>
-                <WrappedActivityStat
-                  stats={[
-                    {
-                      id: "daysActive",
-                      label: "Days Active",
-                      value: wrappedData.daysActive,
-                    },
-                    {
-                      id: "mostActiveMonth",
-                      label: "Most Active Day",
-                      value: wrappedData.mostActiveDay,
-                    },
-                    {
-                      id: "listActivity",
-                      label: "List Activity",
-                      value: wrappedData.listActivity,
-                    },
-                    {
-                      id: "bestBuddy",
-                      label: "Best Buddy",
-                      value: wrappedData.bestBuddy,
-                    },
-                  ]}
-                />
+                <WrappedActivityStat stats={dashboard.activity.stats} />
                 <div className='flex-1'>
-                  <DailyActivityCard
-                    activity={{
-                      episodePerDay: wrappedData.episodePerDay,
-                      chapterPerDay: wrappedData.chapterPerDay,
-                      activityPerDay: wrappedData.activityPerDay,
-                    }}
-                  />
+                  <WrappedDailyActivity activity={dashboard.activity.daily} />
                 </div>
               </div>
 
-              <div className='w-full h-[265.79px] bg-[#1C1C27] border border-[#31313B] rounded-3xl px-9 py-6.25 flex flex-col gap-8.25'>
-                <div className='flex items-center gap-2.5'>
-                  <div className='w-1 h-4 bg-[#E7D3EB] rounded-full' />
-                  <h4 className='text-[14px] font-bold text-[#B7A5BB]'>
-                    Monthly Activity
-                  </h4>
-                </div>
-
+              <CardBox className='w-full h-[265.79px] px-9 py-6.25 flex flex-col gap-8.25'>
+                <SectionHeader title='Monthly Activity' />
                 <div className='flex-1'>
-                  <WrappedMonthlyChart data={wrappedData.monthlyActivity} />
+                  <WrappedMonthlyChart data={dashboard.activity.monthly} />
                 </div>
-              </div>
+              </CardBox>
               <WrappedTopTagsAndGenres
-                tags={wrappedData.topTags}
-                genres={wrappedData.topGenres}
+                tags={dashboard.discovery.topTags}
+                genres={dashboard.discovery.topGenres}
               />
             </div>
 
             <div className='flex flex-col gap-7.5 w-[476.35px]'>
-              <WrappedTopList title='Top Anime' items={wrappedData.topAnime} />
-              <WrappedTopList title='Top Manga' items={wrappedData.topManga} />
+              <WrappedTopList
+                title='Top Anime'
+                items={dashboard.anime.topList}
+              />
+              <WrappedTopList
+                title='Top Manga'
+                items={dashboard.manga.topList}
+              />
             </div>
           </div>
         </div>

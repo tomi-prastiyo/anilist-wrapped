@@ -8,6 +8,9 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import { CardBox } from "@/presentation/components/ui/CardBox";
+import { SectionHeader } from "@/presentation/components/ui/SectionHeader";
+import { chartStyles } from "@/shared/constants/theme";
 
 interface TopTagsAndGenresProps {
   tags: {
@@ -27,37 +30,31 @@ export function WrappedTopTagsAndGenres({
   return (
     <div className='flex gap-6 w-full max-w-137.5 h-64'>
       {/* Top Tags */}
-      <div className='flex-1 bg-[#1C1C27] border border-[#31313B] rounded-3xl p-5 flex flex-col gap-3 shadow-sm'>
-        <div className='flex items-center gap-2.5'>
-          <div className='w-1 h-4 bg-[#E7D3EB] rounded-full' />
-          <h4 className='text-[14px] font-bold text-[#B7A5BB]'>Top Tags</h4>
-        </div>
+      <CardBox className='flex-1 p-5 flex flex-col gap-3 shadow-sm'>
+        <SectionHeader title='Top Tags' />
 
         <div className='flex gap-2 flex-wrap'>
           {tags.length > 0 ? (
             tags.map((tag) => (
               <span
                 key={tag.name}
-                className='px-3 py-1 text-[12px] bg-linear-to-r from-[#0B1622] to-[#121A2B] border border-[#31313B] rounded-lg text-[#CBD5E1] hover:bg-[#0D1B2A] transition'
+                className='px-3 py-1 text-[12px] bg-linear-to-r from-dashboard-deep to-[#121A2B] border border-card-border rounded-lg text-text-subtle hover:bg-[#0D1B2A] transition'
                 title={`Used ${tag.count} times`}
               >
                 {tag.name}
               </span>
             ))
           ) : (
-            <span className='text-[12px] text-[#64748B]'>
+            <span className='text-[12px] text-text-faint'>
               No tags available
             </span>
           )}
         </div>
-      </div>
+      </CardBox>
 
       {/* Genre Radar */}
-      <div className='flex-1 bg-[#1C1C27] border border-[#31313B] rounded-3xl p-5 flex flex-col gap-3 shadow-sm'>
-        <div className='flex items-center gap-2.5'>
-          <div className='w-1 h-4 bg-[#E7D3EB] rounded-full' />
-          <h4 className='text-[14px] font-bold text-[#B7A5BB]'>Genre Stats</h4>
-        </div>
+      <CardBox className='flex-1 p-5 flex flex-col gap-3 shadow-sm'>
+        <SectionHeader title='Genre Stats' />
 
         <div className='flex-1 w-full'>
           {genres.length > 0 ? (
@@ -84,17 +81,10 @@ export function WrappedTopTagsAndGenres({
                 />
 
                 <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#0B1120",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: 8,
-                    fontSize: 12,
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
-                    pointerEvents: "none",
-                  }}
-                  labelStyle={{ color: "#E5E7EB", fontWeight: 600 }}
-                  itemStyle={{ color: "#EC4899" }}
-                  cursor={{ stroke: "rgba(255,255,255,0.12)" }}
+                  contentStyle={chartStyles.tooltip}
+                  labelStyle={chartStyles.tooltipLabel}
+                  itemStyle={chartStyles.tooltipItem}
+                  cursor={chartStyles.tooltipCursor}
                 />
 
                 <Radar
@@ -107,12 +97,12 @@ export function WrappedTopTagsAndGenres({
               </RadarChart>
             </ResponsiveContainer>
           ) : (
-            <div className='h-full flex items-center justify-center text-[12px] text-[#64748B]'>
+            <div className='h-full flex items-center justify-center text-[12px] text-text-faint'>
               No genre data
             </div>
           )}
         </div>
-      </div>
+      </CardBox>
     </div>
   );
 }

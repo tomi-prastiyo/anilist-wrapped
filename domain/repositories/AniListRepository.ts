@@ -14,12 +14,12 @@ export interface AniListRepository {
 
   getActivitiesByYear(userId: number, year: number): Promise<AniListActivity[]>;
 
-  getMeanScoreAndTopAnimeByAnimeOrMangaIds(
+  getMeanScoreAndTopMedia(
     userId: number,
     mediaIds: number[],
   ): Promise<{
     meanScore: number;
-    topAnime: AniListMediaList[];
+    topMedia: AniListMediaList[];
   }>;
 
   getTopTagsAndTopGenresByAnimeAndMangaIds(

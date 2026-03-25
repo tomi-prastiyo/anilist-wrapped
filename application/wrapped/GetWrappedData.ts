@@ -11,16 +11,19 @@ export async function getWrappedData(
   const user = await repo.getUser(username);
   const activities = await repo.getActivitiesByYear(user.id, year);
   const stats = animeAndMangaStats(activities, year);
-  const animeMeanScore = await repo.getMeanScoreAndTopAnimeByAnimeOrMangaIds(
+
+  const animeMeanScore = await repo.getMeanScoreAndTopMedia(
     user.id,
     stats.animeIds,
   );
   stats.totalAnimeMeanScore = animeMeanScore.meanScore;
-  const mangaMeanScore = await repo.getMeanScoreAndTopAnimeByAnimeOrMangaIds(
+
+  const mangaMeanScore = await repo.getMeanScoreAndTopMedia(
     user.id,
     stats.mangaIds,
   );
   stats.totalMangaMeanScore = mangaMeanScore.meanScore;
+
   const topTagsAndTopGenres =
     await repo.getTopTagsAndTopGenresByAnimeAndMangaIds(
       user.id,
@@ -33,41 +36,15 @@ export async function getWrappedData(
       name: user.name,
       avatar: user.avatar,
       banner: user.banner,
-      memberSince: user.createdAt
-        ? new Date(user.createdAt * 1000).getFullYear()
-        : "-",
+      memberSince: user.createdAt,
     },
 
-    totalAnimeTitles: stats.totalAnimeTitles,
-    totalMangaTitles: stats.totalMangaTitles,
-
-    totalAnimeEpisodes: stats.totalAnimeEpisodes,
-    totalAnimeCompleted: stats.totalAnimeCompleted,
-    totalAnimePaused: stats.totalAnimePaused,
-    totalAnimeDropped: stats.totalAnimeDropped,
-    totalAnimeMeanScore: stats.totalAnimeMeanScore,
-
-    totalMangaChapters: stats.totalMangaChapters,
-    totalMangaCompleted: stats.totalMangaCompleted,
-    totalMangaPaused: stats.totalMangaPaused,
-    totalMangaDropped: stats.totalMangaDropped,
-    totalMangaMeanScore: stats.totalMangaMeanScore,
-
-    daysActive: stats.daysActive,
-    mostActiveDay: stats.mostActiveDay,
-    listActivity: stats.listActivity,
-    bestBuddy: stats.bestBuddy,
-
-    episodePerDay: stats.episodePerDay,
-    chapterPerDay: stats.chapterPerDay,
-    activityPerDay: stats.activityPerDay,
-
-    monthlyActivity: stats.monthlyActivity,
+    stats,
 
     topGenres: topTagsAndTopGenres.topGenres,
     topTags: topTagsAndTopGenres.topTags,
 
-    topAnime: animeMeanScore.topAnime,
-    topManga: mangaMeanScore.topAnime,
+    topAnime: animeMeanScore.topMedia,
+    topManga: mangaMeanScore.topMedia,
   };
 }

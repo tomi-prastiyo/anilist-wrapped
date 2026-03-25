@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@mui/material";
-
 interface WrappedExportButtonProps {
   onClick: () => void;
 }
@@ -9,27 +7,17 @@ interface WrappedExportButtonProps {
 export const WrappedExportButton = ({ onClick }: WrappedExportButtonProps) => {
   return (
     <div className='flex justify-end w-full mt-4'>
-      <Button
+      <button
         onClick={onClick}
-        variant='contained'
-        sx={{
-          px: 4,
-          py: 1.5,
-          borderRadius: "1.25rem",
-          fontWeight: "bold",
-          background: "linear-gradient(90deg, #EC4899, #F472B6)",
-          color: "#fff",
-          textTransform: "none",
-          boxShadow: "0 4px 12px rgba(236,72,153,0.3)",
-          transition: "all 0.3s ease",
-          "&:hover": {
-            background: "linear-gradient(90deg, #F472B6, #EC4899)",
-            boxShadow: "0 6px 18px rgba(236,72,153,0.4)",
-          },
-        }}
+        className='px-6 py-3 rounded-[1.25rem] font-bold text-white text-sm
+          bg-gradient-to-r from-accent to-accent-light
+          shadow-[0_4px_12px_rgba(236,72,153,0.3)]
+          hover:from-accent-light hover:to-accent
+          hover:shadow-[0_6px_18px_rgba(236,72,153,0.4)]
+          transition-all duration-300 cursor-pointer'
       >
         Export Image
-      </Button>
+      </button>
     </div>
   );
 };

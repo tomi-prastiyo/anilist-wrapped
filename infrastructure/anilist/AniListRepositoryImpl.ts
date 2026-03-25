@@ -94,12 +94,12 @@ export class AniListRepositoryImpl implements AniListRepository {
     return results;
   }
 
-  async getMeanScoreAndTopAnimeByAnimeOrMangaIds(
+  async getMeanScoreAndTopMedia(
     userId: number,
     mediaIds: number[],
   ): Promise<{
     meanScore: number;
-    topAnime: AniListMediaList[];
+    topMedia: AniListMediaList[];
   }> {
     let page = 1;
     let hasNextPage = true;
@@ -154,14 +154,14 @@ export class AniListRepositoryImpl implements AniListRepository {
             (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2),
           );
 
-    // ===== TOP 5 ANIME =====
-    const topAnime = [...mediaMap.values()]
+    // ===== TOP 5 MEDIA =====
+    const topMedia = [...mediaMap.values()]
       .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
       .slice(0, 5);
 
     return {
       meanScore,
-      topAnime,
+      topMedia,
     };
   }
 

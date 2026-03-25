@@ -1,48 +1,60 @@
 import { TopList } from "./TopList";
 import { User } from "./User";
 
-export interface Dashboard {
-  user: User;
+export interface MediaStats {
+  totalEpisodes?: number;
+  totalChapters?: number;
+  totalCompleted: number;
+  totalPaused: number;
+  totalDropped: number;
+  meanScore: number;
+}
 
-  totalAnimeTitles: number;
-  totalMangaTitles: number;
-
-  totalAnimeEpisodes: number;
-  totalAnimeCompleted: number;
-  totalAnimePaused: number;
-  totalAnimeDropped: number;
-  totalAnimeMeanScore: number;
-
-  totalMangaChapters: number;
-  totalMangaCompleted: number;
-  totalMangaPaused: number;
-  totalMangaDropped: number;
-  totalMangaMeanScore: number;
-
-  daysActive: string;
-  mostActiveDay: string;
-  listActivity: number;
-  bestBuddy: string;
-
+export interface DailyActivity {
   episodePerDay: number;
   chapterPerDay: number;
   activityPerDay: number;
+}
 
-  monthlyActivity: {
-    month: string;
-    count: number;
-  }[];
+export interface ActivityStat {
+  id: string;
+  label: string;
+  value: string | number;
+}
 
-  topGenres: {
-    name: string;
-    count: number;
-  }[];
+export interface MonthlyData {
+  month: string;
+  count: number;
+}
 
-  topTags: {
-    name: string;
-    count: number;
-  }[];
+export interface TagOrGenre {
+  name: string;
+  count: number;
+}
 
-  topAnime: TopList[];
-  topManga: TopList[];
+export interface Dashboard {
+  user: User;
+
+  anime: {
+    totalTitles: number;
+    stats: MediaStats;
+    topList: TopList[];
+  };
+
+  manga: {
+    totalTitles: number;
+    stats: MediaStats;
+    topList: TopList[];
+  };
+
+  activity: {
+    stats: ActivityStat[];
+    daily: DailyActivity;
+    monthly: MonthlyData[];
+  };
+
+  discovery: {
+    topTags: TagOrGenre[];
+    topGenres: TagOrGenre[];
+  };
 }

@@ -9,6 +9,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import { chartStyles } from "@/shared/constants/theme";
 
 interface MonthlyChartProps {
   data: {
@@ -20,7 +21,7 @@ interface MonthlyChartProps {
 export function WrappedMonthlyChart({ data }: MonthlyChartProps) {
   if (!data || data.length === 0) {
     return (
-      <div className='h-full flex items-center justify-center text-[12px] text-[#64748B]'>
+      <div className='h-full flex items-center justify-center text-[12px] text-text-faint'>
         No activity data
       </div>
     );
@@ -33,48 +34,36 @@ export function WrappedMonthlyChart({ data }: MonthlyChartProps) {
           data={data}
           margin={{ top: 16, right: 16, left: 0, bottom: 0 }}
         >
-          {/* Grid */}
           <CartesianGrid
-            stroke='rgba(255,255,255,0.08)'
-            strokeDasharray='3 3'
+            stroke={chartStyles.grid.stroke}
+            strokeDasharray={chartStyles.grid.strokeDasharray}
             vertical
             horizontal
           />
 
-          {/* X Axis */}
           <XAxis
             dataKey='month'
-            tick={{ fill: "#94A3B8", fontSize: 10 }}
-            axisLine={{ stroke: "rgba(255,255,255,0.2)" }}
-            tickLine={{ stroke: "rgba(255,255,255,0.1)" }}
+            tick={chartStyles.axis.tick}
+            axisLine={chartStyles.axis.axisLine}
+            tickLine={chartStyles.axis.tickLine}
             padding={{ left: 10, right: 10 }}
           />
 
-          {/* Y Axis */}
           <YAxis
-            tick={{ fill: "#94A3B8", fontSize: 10 }}
-            axisLine={{ stroke: "rgba(255,255,255,0.2)" }}
-            tickLine={{ stroke: "rgba(255,255,255,0.1)" }}
+            tick={chartStyles.axis.tick}
+            axisLine={chartStyles.axis.axisLine}
+            tickLine={chartStyles.axis.tickLine}
             width={32}
             allowDecimals={false}
           />
 
-          {/* Tooltip */}
           <Tooltip
-            contentStyle={{
-              backgroundColor: "#0B1120",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: 8,
-              fontSize: 12,
-              boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
-              pointerEvents: "none",
-            }}
-            labelStyle={{ color: "#E5E7EB", fontWeight: 600 }}
-            itemStyle={{ color: "#EC4899" }}
-            cursor={{ stroke: "rgba(255,255,255,0.12)" }}
+            contentStyle={chartStyles.tooltip}
+            labelStyle={chartStyles.tooltipLabel}
+            itemStyle={chartStyles.tooltipItem}
+            cursor={chartStyles.tooltipCursor}
           />
 
-          {/* Gradient */}
           <defs>
             <linearGradient id='lineGradient' x1='0' y1='0' x2='0' y2='1'>
               <stop offset='0%' stopColor='#EC4899' stopOpacity={1} />
